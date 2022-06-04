@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44257188, g: 0.48477173, b: 0.5342941, a: 1}
+  m_IndirectSpecularColor: {r: 0.44250324, g: 0.48466378, b: 0.53408325, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -604,13 +604,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370647515}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &370647519
 CapsuleCollider:
@@ -745,7 +745,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!59 &480716623
 HingeJoint:
@@ -905,7 +905,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616575219}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e05d360890a1eca46bd5cd97e82f5439, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -969,7 +969,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616575219}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -281.81, y: 17.53, z: -453.52}
+  m_LocalPosition: {x: -277.8, y: 26.21, z: -435.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1062,7 +1062,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &635932597
 CapsuleCollider:
@@ -1220,7 +1220,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678359573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -278.44, y: 27.24, z: -435.48}
+  m_LocalPosition: {x: -302.7, y: 27.24, z: -435.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2014,7 +2014,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!59 &1085005663
 HingeJoint:
@@ -2459,7 +2459,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132092580}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 300
   m_Drag: 1
   m_AngularDrag: 1
   m_UseGravity: 1
@@ -2896,13 +2896,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153900514}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &1153900518
 CapsuleCollider:
@@ -3151,7 +3151,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &1174145703
 CapsuleCollider:
@@ -3392,7 +3392,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!59 &1301274688
 HingeJoint:
@@ -3712,7 +3712,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &1417127371
 CapsuleCollider:
@@ -3897,13 +3897,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1446433481}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &1446433485
 CapsuleCollider:
@@ -4834,7 +4834,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &1915433586
 CapsuleCollider:
@@ -5108,13 +5108,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2028189043}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 2
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &2028189047
 CapsuleCollider:
@@ -5230,7 +5230,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 10
+  m_Constraints: 90
   m_CollisionDetection: 0
 --- !u!136 &2069269407
 CapsuleCollider:
