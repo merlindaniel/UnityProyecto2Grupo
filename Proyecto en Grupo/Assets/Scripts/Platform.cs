@@ -17,12 +17,11 @@ public class Platform : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "NPC" && nextPlatform != null) {
-            other.transform.LookAt(nextPlatform);
+            // other.transform.LookAt(nextPlatform);
         }
     }
 }
