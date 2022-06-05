@@ -9,8 +9,8 @@ public class JumpingAI : MonoBehaviour
     // Start is called before the first frame update
 
     //Factores
-    const float factorFuerzaX = 0.0025f;
-    const float factorIncFuerzaYPorDistancia = 0.01f;
+    const float factorFuerzaX = 0.005f;
+    const float factorIncAltura = 2f;
     const float valorMaximoX = 10000;
 
     //---ESTADOS
@@ -27,6 +27,7 @@ public class JumpingAI : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 5;
         principalNpc = GetComponent<PrincipalNPC>();
         rb = GetComponent<Rigidbody>();
 
@@ -67,7 +68,7 @@ public class JumpingAI : MonoBehaviour
                 rb.AddRelativeForce(new Vector3(0, fuerzaY, fuerzaX), ForceMode.Impulse);
                 principalNpc.isJumping = true;
 
-                yield return new WaitUntil(() => (principalNpc.isJumping == false));
+                yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
 
 
                 int actualNextPlatformId = principalNpc.getNextPlatform().GetInstanceID();
@@ -90,8 +91,15 @@ public class JumpingAI : MonoBehaviour
 
                 casosEntrenamiento.add(casoAdecidir);
 
-                if (resultado == 1) //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
-                    break;
+                if (resultado == 1) {
+                    break;  //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.5f);  //Para ver donde cayó
+                    principalNpc.goToSpawn();
+                    yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+                }
                 //yield return new WaitForSeconds(1.5f);
             }
         }
@@ -106,9 +114,9 @@ public class JumpingAI : MonoBehaviour
     float obtenerFuerzaY(float masa, float alturaObjetivo, float distanciaObjetivo)
     {
         if (alturaObjetivo > 0)
-            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f) + (distanciaObjetivo* factorIncFuerzaYPorDistancia);
+            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f * factorIncAltura); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
         else
-            return masa * 9.81f + (distanciaObjetivo * factorIncFuerzaYPorDistancia);
+            return masa * 9.81f + ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
     }
 
     // Update is called once per frame

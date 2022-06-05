@@ -32,6 +32,7 @@ public class PrincipalNPC : MonoBehaviour
 
     public void goToSpawn()
     {
+        isJumping = true; //Spawnea en al aire. Tomaremos esto como un salto
         Transform spawnTransform = GameObject.FindGameObjectWithTag("Respawn").transform;
         transform.position = new Vector3(spawnTransform.position.x, spawnTransform.position.y + 10, spawnTransform.position.z);
         nextPlatform = GameObject.FindGameObjectWithTag("Respawn").GetComponent<Platform>().nextPlatform;
