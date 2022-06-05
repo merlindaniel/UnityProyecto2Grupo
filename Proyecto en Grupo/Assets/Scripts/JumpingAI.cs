@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using weka.core;
 
 
 public class JumpingAI : MonoBehaviour
 {
+    Collider collider;
+    float alturaMax = -10000f;
+    float alturaMaxGeneral = -10000f;
+    bool pausarCalculoAlturas = false;
+    public string texto;
     // Start is called before the first frame update
 
     //Factores
@@ -24,10 +30,15 @@ public class JumpingAI : MonoBehaviour
     PrincipalNPC principalNpc;
     Rigidbody rb;
 
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 20, 600, 20), texto);
+    }
 
     void Start()
     {
-        Time.timeScale = 5;
+        collider = GetComponent<Collider>();
+        //Time.timeScale = 5;
         principalNpc = GetComponent<PrincipalNPC>();
         rb = GetComponent<Rigidbody>();
 
@@ -59,11 +70,13 @@ public class JumpingAI : MonoBehaviour
                 print("--Entra for");
                 int nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
 
-                float altura = principalNpc.getNextPlatform().transform.position.y - transform.position.y;
-                float distancia = Mathf.Abs(transform.position.x - principalNpc.getNextPlatform().transform.position.x);
+                Vector3 positionNextPlatform = principalNpc.getNextPlatform().transform.position;
+
+                float altura = principalNpc.getNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f));//altura desde los pies del NPC
+                float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
                 float fuerzaY = obtenerFuerzaY(rb.mass, altura, distancia);
 
-                print("Altura: " + altura + ". Distancia: " + distancia);
+                print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
                 print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
                 rb.AddRelativeForce(new Vector3(0, fuerzaY, fuerzaX), ForceMode.Impulse);
                 principalNpc.isJumping = true;
@@ -97,8 +110,10 @@ public class JumpingAI : MonoBehaviour
                 else
                 {
                     yield return new WaitForSeconds(0.5f);  //Para ver donde cayó
+                    pausarCalculoAlturas = true;
                     principalNpc.goToSpawn();
                     yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+                    pausarCalculoAlturas = false;
                 }
                 //yield return new WaitForSeconds(1.5f);
             }
@@ -114,14 +129,41 @@ public class JumpingAI : MonoBehaviour
     float obtenerFuerzaY(float masa, float alturaObjetivo, float distanciaObjetivo)
     {
         if (alturaObjetivo > 0)
-            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f * factorIncAltura); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
+            return masa * Mathf.Sqrt(alturaObjetivo * 2.0f * 9.81f); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
         else
-            return masa * 9.81f + ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
+            return masa * 9.81f; //+ ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
     }
 
     // Update is called once per frame
+    
+    
     void Update()
     {
+        if (pausarCalculoAlturas)
+        {
+            alturaMax = -10000f;
+            texto = "Alt max esta iteracion: - " + ". Alt max general: " + alturaMaxGeneral;
+        } else
+        {
+            float alturaActual = (transform.position.y - (collider.bounds.size.y / 2f));
+            if (alturaActual > alturaMax)
+            {
+                alturaMax = alturaActual;
+                texto = "Alt max esta iteracion: " + alturaMax + ". Alt max general: " + alturaMaxGeneral;
+            }
+
+
+            if (alturaActual > alturaMaxGeneral)
+            {
+                alturaMaxGeneral = alturaActual;
+                texto = "Alt max esta iteracion: " + alturaMax + ". Alt max general: " + alturaMaxGeneral;
+            }
+        }
+            
+
         
+
+
+
     }
 }
