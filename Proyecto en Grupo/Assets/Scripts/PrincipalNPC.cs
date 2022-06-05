@@ -35,12 +35,12 @@ public class PrincipalNPC : MonoBehaviour
         Transform spawnTransform = GameObject.FindGameObjectWithTag("Respawn").transform;
         transform.position = new Vector3(spawnTransform.position.x, spawnTransform.position.y + 10, spawnTransform.position.z);
         nextPlatform = GameObject.FindGameObjectWithTag("Respawn").GetComponent<Platform>().nextPlatform;
-        isJumping = false;
+        //isJumping = false;
     }
 
     public void lookAtNextPlatform(GameObject nextPlatform)
     {
-        transform.LookAt(nextPlatform.transform);
+        transform.LookAt(nextPlatform.transform.position);
         this.nextPlatform = nextPlatform;
         isJumping = false;
     }

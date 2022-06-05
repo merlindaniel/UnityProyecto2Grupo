@@ -7,6 +7,13 @@ using weka.core;
 public class JumpingAI : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    //Factores
+    const float factorFuerzaX = 0.0025f;
+    const float factorIncFuerzaYPorDistancia = 0.01f;
+    const float valorMaximoX = 10000;
+
+    //---ESTADOS
     const string ENTRENAMIENTO = "Entrenamiento";
     const string PREDICCION = "Prediccion";
 
@@ -34,7 +41,6 @@ public class JumpingAI : MonoBehaviour
         //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
         print("Fase de entrenamiento: Inicializada");
 
-        float valorMaximoX = 100;
         yield return new WaitForSeconds(3.0f);
 
         while (principalNpc.getNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
@@ -47,7 +53,7 @@ public class JumpingAI : MonoBehaviour
             //else
             //    break;
 
-            for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + 0.01f * valorMaximoX)
+            for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
             {
                 print("--Entra for");
                 int nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
@@ -58,7 +64,7 @@ public class JumpingAI : MonoBehaviour
 
                 print("Altura: " + altura + ". Distancia: " + distancia);
                 print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
-                rb.AddForce(new Vector3(fuerzaX, fuerzaY, 0), ForceMode.Impulse);
+                rb.AddRelativeForce(new Vector3(0, fuerzaY, fuerzaX), ForceMode.Impulse);
                 principalNpc.isJumping = true;
 
                 yield return new WaitUntil(() => (principalNpc.isJumping == false));
@@ -86,7 +92,7 @@ public class JumpingAI : MonoBehaviour
 
                 if (resultado == 1) //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
                     break;
-                yield return new WaitForSeconds(1.5f);
+                //yield return new WaitForSeconds(1.5f);
             }
         }
         print("Se crearon " + casosEntrenamiento.numInstances() + " casos de entrenamiento");
@@ -100,9 +106,9 @@ public class JumpingAI : MonoBehaviour
     float obtenerFuerzaY(float masa, float alturaObjetivo, float distanciaObjetivo)
     {
         if (alturaObjetivo > 0)
-            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f) + (distanciaObjetivo*0.01f);
+            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f) + (distanciaObjetivo* factorIncFuerzaYPorDistancia);
         else
-            return masa * 9.81f + (distanciaObjetivo * 0.01f);
+            return masa * 9.81f + (distanciaObjetivo * factorIncFuerzaYPorDistancia);
     }
 
     // Update is called once per frame
