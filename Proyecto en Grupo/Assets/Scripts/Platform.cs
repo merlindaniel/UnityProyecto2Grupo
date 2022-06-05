@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    public Transform nextPlatform;
+    public GameObject nextPlatform;
 
     public bool finalPlatform = false;
 
@@ -21,7 +21,11 @@ public class Platform : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "NPC" && nextPlatform != null) {
-            // other.transform.LookAt(nextPlatform);
+            //other.transform.LookAt(nextPlatform);
+            other.gameObject.GetComponent<PrincipalNPC>().lookAtNextPlatform(nextPlatform);
+        } else if (other.gameObject.tag == "NPC" && nextPlatform == null)
+        {
+            other.gameObject.GetComponent<PrincipalNPC>().setFinished();
         }
     }
 }

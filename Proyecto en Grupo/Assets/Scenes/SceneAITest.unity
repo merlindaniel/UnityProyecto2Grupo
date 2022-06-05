@@ -973,7 +973,7 @@ GameObject:
   - component: {fileID: 464502372}
   m_Layer: 0
   m_Name: PlatformBody (1)
-  m_TagString: Untagged
+  m_TagString: PlatformBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1150,7 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576b6411a74f31d4da823e72782ac3a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextPlatform: {fileID: 36408693}
+  nextPlatform: {fileID: 208119421}
   finalPlatform: 0
 --- !u!65 &464502378
 BoxCollider:
@@ -1429,9 +1429,11 @@ GameObject:
   - component: {fileID: 616575222}
   - component: {fileID: 616575221}
   - component: {fileID: 616575220}
+  - component: {fileID: 616575226}
+  - component: {fileID: 616575225}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1523,13 +1525,38 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616575219}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -279.52, y: 10.7, z: -460.96}
+  m_LocalPosition: {x: -291.57, y: 10.7, z: -454.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &616575225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616575219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &616575226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616575219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5b069ea25504bc4dbb531fd9bfae7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isJumping: 0
 --- !u!1 &635932593
 GameObject:
   m_ObjectHideFlags: 0
@@ -2918,7 +2945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576b6411a74f31d4da823e72782ac3a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextPlatform: {fileID: 36408693}
+  nextPlatform: {fileID: 0}
   finalPlatform: 0
 --- !u!65 &1132092588
 BoxCollider:
@@ -3419,6 +3446,7 @@ GameObject:
   - component: {fileID: 1167002258}
   - component: {fileID: 1167002257}
   - component: {fileID: 1167002256}
+  - component: {fileID: 1167002260}
   m_Layer: 0
   m_Name: Spawn
   m_TagString: Respawn
@@ -3504,6 +3532,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1167002260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167002255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576b6411a74f31d4da823e72782ac3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextPlatform: {fileID: 464502371}
+  finalPlatform: 0
 --- !u!1 &1174145699
 GameObject:
   m_ObjectHideFlags: 0

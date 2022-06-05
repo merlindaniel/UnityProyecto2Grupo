@@ -1,0 +1,9 @@
+@relation ExperienciaSalto
+
+@attribute fuerzaX numeric
+@attribute fuerzaY numeric
+@attribute alturaObjetivo numeric
+@attribute distanciaObjetivo numeric
+@attribute llegaAPlataforma { no, si }
+
+@data

@@ -18,8 +18,9 @@ public class Ground : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "NPC") {
-            Transform spawnTransform = GameObject.FindGameObjectWithTag("Respawn").transform;
-            other.transform.position = new Vector3(spawnTransform.position.x, spawnTransform.position.y + 10, spawnTransform.position.z);
+            other.gameObject.GetComponent<PrincipalNPC>().goToSpawn();
+            //Transform spawnTransform = GameObject.FindGameObjectWithTag("Respawn").transform;
+            //other.transform.position = new Vector3(spawnTransform.position.x, spawnTransform.position.y + 10, spawnTransform.position.z);
         }
         
     }
