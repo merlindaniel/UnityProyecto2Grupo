@@ -35,7 +35,7 @@ public class JumpingAI : MonoBehaviour
         print("Fase de entrenamiento: Inicializada");
 
         float valorMaximoX = 100;
-
+        yield return new WaitForSeconds(3.0f);
 
         while (principalNpc.getNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
         {
@@ -52,10 +52,11 @@ public class JumpingAI : MonoBehaviour
                 print("--Entra for");
                 int nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
 
-                float altura = transform.position.y - principalNpc.getNextPlatform().transform.position.y;
+                float altura = principalNpc.getNextPlatform().transform.position.y - transform.position.y;
                 float distancia = Mathf.Abs(transform.position.x - principalNpc.getNextPlatform().transform.position.x);
                 float fuerzaY = obtenerFuerzaY(rb.mass, altura, distancia);
 
+                print("Altura: " + altura + ". Distancia: " + distancia);
                 print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
                 rb.AddForce(new Vector3(fuerzaX, fuerzaY, 0), ForceMode.Impulse);
                 principalNpc.isJumping = true;
@@ -85,7 +86,7 @@ public class JumpingAI : MonoBehaviour
 
                 if (resultado == 1) //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
                     break;
-                //yield return new WaitForSeconds(0.0f);
+                yield return new WaitForSeconds(1.5f);
             }
         }
         print("Se crearon " + casosEntrenamiento.numInstances() + " casos de entrenamiento");
@@ -99,9 +100,9 @@ public class JumpingAI : MonoBehaviour
     float obtenerFuerzaY(float masa, float alturaObjetivo, float distanciaObjetivo)
     {
         if (alturaObjetivo > 0)
-            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f) * (distanciaObjetivo*0.01f);
+            return masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f) + (distanciaObjetivo*0.01f);
         else
-            return 1.0f * (distanciaObjetivo * 0.01f);
+            return masa * 9.81f + (distanciaObjetivo * 0.01f);
     }
 
     // Update is called once per frame
