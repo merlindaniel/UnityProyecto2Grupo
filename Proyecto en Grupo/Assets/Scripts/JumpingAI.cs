@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using weka.core;
+using System;
 
 
 public class JumpingAI : MonoBehaviour
@@ -16,7 +17,7 @@ public class JumpingAI : MonoBehaviour
 
     //Factores
     const float factorFuerzaX = 0.005f;
-    const float factorIncAltura = 2f;
+    const float factorIncAltura = 2.0f;
     const float valorMaximoX = 10000;
 
     //---ESTADOS
@@ -37,8 +38,9 @@ public class JumpingAI : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 2;
         collider = GetComponent<Collider>();
-        //Time.timeScale = 5;
+        
         principalNpc = GetComponent<PrincipalNPC>();
         rb = GetComponent<Rigidbody>();
 
@@ -57,29 +59,32 @@ public class JumpingAI : MonoBehaviour
 
         while (principalNpc.getNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
         {
-            print("--Entra while");
-            //Platform p = ;
-            //int nextNextPlatformId = -1;
-            //if (p.nextPlatform != null)
-            //    nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
-            //else
-            //    break;
+            //print("--Entra while");
 
             for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
             {
-                print("--Entra for");
-                int nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
+                //print("--Entra for");
+                int nextNextPlatformId = -1;
+                try
+                {
+                    nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
+                } catch(NullReferenceException ex)
+                {
+                    nextNextPlatformId = principalNpc.getNextPlatform().GetComponentInChildren<InternalPlatform>().nextPlatform.GetInstanceID();
+                }
+                
 
                 Vector3 positionNextPlatform = principalNpc.getNextPlatform().transform.position;
 
-                float altura = principalNpc.getNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f));//altura desde los pies del NPC
+                float altura = principalNpc.getNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
                 float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
                 float fuerzaY = obtenerFuerzaY(rb.mass, altura, distancia);
 
-                print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
+                //print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
                 print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
-                rb.AddRelativeForce(new Vector3(0, fuerzaY, fuerzaX), ForceMode.Impulse);
-                principalNpc.isJumping = true;
+                //rb.AddRelativeForce(new Vector3(0, fuerzaY, fuerzaX), ForceMode.Impulse);
+                //principalNpc.isJumping = true;
+                principalNpc.jumpRelative(0, fuerzaY, fuerzaX);
 
                 yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
 
@@ -129,7 +134,7 @@ public class JumpingAI : MonoBehaviour
     float obtenerFuerzaY(float masa, float alturaObjetivo, float distanciaObjetivo)
     {
         if (alturaObjetivo > 0)
-            return masa * Mathf.Sqrt(alturaObjetivo * 2.0f * 9.81f); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
+            return masa * Mathf.Sqrt(alturaObjetivo * 2.0f * 9.81f * factorIncAltura); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
         else
             return masa * 9.81f; //+ ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
     }
@@ -142,21 +147,21 @@ public class JumpingAI : MonoBehaviour
         if (pausarCalculoAlturas)
         {
             alturaMax = -10000f;
-            texto = "Alt max esta iteracion: - " + ". Alt max general: " + alturaMaxGeneral;
+            texto = "Alt max(world) esta iteracion: - " + ". Alt max(world) general: " + alturaMaxGeneral; //Nota: Aqui muestra la altura del mundo. Realmente nosotros trabajamos con la diferencia de altura entre la plataforma actual y la siguiente
         } else
         {
             float alturaActual = (transform.position.y - (collider.bounds.size.y / 2f));
             if (alturaActual > alturaMax)
             {
                 alturaMax = alturaActual;
-                texto = "Alt max esta iteracion: " + alturaMax + ". Alt max general: " + alturaMaxGeneral;
+                texto = "Alt max(world) esta iteracion: " + alturaMax + ". Alt max(world) general: " + alturaMaxGeneral;
             }
 
 
             if (alturaActual > alturaMaxGeneral)
             {
                 alturaMaxGeneral = alturaActual;
-                texto = "Alt max esta iteracion: " + alturaMax + ". Alt max general: " + alturaMaxGeneral;
+                texto = "Alt max(world) esta iteracion: " + alturaMax + ". Alt max(world) general: " + alturaMaxGeneral;
             }
         }
             
