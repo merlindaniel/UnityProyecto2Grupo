@@ -20,7 +20,7 @@ public class ExternalPlatform : MonoBehaviour
     {
         if (other.gameObject.tag == "NPC")
         {
-            print("---Plataforma EXTERNA pisada. Volviendo al Spawn");
+            //print("---Plataforma EXTERNA pisada. Volviendo al punto anterior");
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
             principalNpc.GoToActualPlatform();
         }

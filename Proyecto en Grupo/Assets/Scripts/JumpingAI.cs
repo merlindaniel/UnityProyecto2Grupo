@@ -1,30 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
 using UnityEngine;
-using UnityEngine.UI;
 using weka.core;
-using System;
+using weka.core.converters;
+//using weka.classifiers;
+using weka.classifiers.trees;
+using weka.classifiers.functions;
+using java.io;
+//using java.lang;
+//using java.util;
+
+
+
 
 
 public class JumpingAI : MonoBehaviour
 {
+    //IA
+    weka.classifiers.functions.MultilayerPerceptron saberPredecirFuerzaZ;
+    public bool realizarEntrenamiento;
+    public string nombreArchivoDeDatosInicial;
+    public string nombreArchivoDeDatosFinal;    //Se guardara los datos en este archivo si se desea realizar un entrenamiento (bool realizarEntrenamiento)
+    public int numSaltosDespues; //Numero de saltos que realizará despues de caer en dentro de la plataforma interna
+    int contadorSaltosDespues;
+
+    //UI
     Collider collider;
     float alturaMax = -10000f;
     float alturaMaxGeneral = -10000f;
     bool pausarCalculoAlturas = false;
-    public string texto;
-    // Start is called before the first frame update
+    string texto;
 
     //Factores
     const float factorFuerzaX = 0.005f;
     const float factorIncAltura = 2.0f;
     const float valorMaximoX = 10000;
-
-    //---ESTADOS
-    const string ENTRENAMIENTO = "Entrenamiento";
-    const string PREDICCION = "Prediccion";
-
-    string estado;
 
     weka.core.Instances casosEntrenamiento;
 
@@ -38,83 +50,171 @@ public class JumpingAI : MonoBehaviour
 
     void Start()
     {
+        contadorSaltosDespues = 0;
+
         collider = GetComponent<Collider>();
-        
         principalNpc = GetComponent<PrincipalNPC>();
         rb = GetComponent<Rigidbody>();
 
-        estado = ENTRENAMIENTO;
+        Regex regex = new Regex(@"[a-zA-Z]+\w*\.arff");
+        if (!regex.IsMatch(nombreArchivoDeDatosInicial))
+            nombreArchivoDeDatosInicial = "Experiencia_Inicial.arff";
+
+        if (!regex.IsMatch(nombreArchivoDeDatosFinal))
+            nombreArchivoDeDatosFinal = "Experiencia_Final.arff";
+
+
+        principalNpc.SetLearing();
         StartCoroutine("Entrenamiento");
     }
 
     IEnumerator Entrenamiento()
     {
-        casosEntrenamiento = new weka.core.Instances(new java.io.FileReader("Assets/WekaData/Experiencia_Inicial.arff"));
-
-        //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
-        print("Fase de entrenamiento: Inicializada");
 
         yield return new WaitForSeconds(3.0f);
 
-        while (principalNpc.GetNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
+
+        //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
+
+        casosEntrenamiento = new weka.core.Instances(new java.io.FileReader("Assets/WekaData/" + nombreArchivoDeDatosInicial));
+        if (realizarEntrenamiento)
         {
-            //print("--Entra while");
-            int actualPlatformId = principalNpc.GetActualPlatform().GetInstanceID();
-
-
-            for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
+            print("Fase de entrenamiento: Inicializada");
+            while (principalNpc.GetNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
             {
-                //print("--Entra for");
+                //print("--Entra while");
+                int actualPlatformId = principalNpc.GetActualPlatform().GetInstanceID();
+                bool plataformaInternaFuePisada = false;   //Para saber si la plataforma fue pisada al menos 1 vez
+                contadorSaltosDespues = 0;
 
-
-                
-                Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
-
-                float altura = principalNpc.GetNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
-                float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
-                float fuerzaY = obtenerFuerzaY(rb.mass, altura, distancia);
-
-                //print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
-                print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
-                //rb.AddRelativeForce(new Vector3(0, fuerzaY, fuerzaX), ForceMode.Impulse);
-                //principalNpc.isJumping = true;
-                principalNpc.jumpRelative(0, fuerzaY, fuerzaX);
-
-                yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
-
-                bool platformChanged = actualPlatformId != principalNpc.GetActualPlatform().GetInstanceID();//Comprobamos si sigue en la misma plataforma
-
-                if (platformChanged)
-                    print("-----El NPC SI LLEGO!");
-                else
-                    print("-----El NPC NO LLEGO"); 
-
-
-                Instance casoAdecidir = new Instance(casosEntrenamiento.numAttributes());
-                casoAdecidir.setDataset(casosEntrenamiento);
-                casoAdecidir.setValue(0, fuerzaX);
-                casoAdecidir.setValue(1, fuerzaY);
-                casoAdecidir.setValue(2, altura);
-                casoAdecidir.setValue(3, distancia);
-                casoAdecidir.setValue(4, platformChanged ? 1 : 0);
-                yield return new WaitForSeconds(1f);
-                casosEntrenamiento.add(casoAdecidir);
-
-                if (platformChanged) {
-                    break;  //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
-                }
-                else
+                for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
                 {
-                    yield return new WaitForSeconds(0.5f);  //Debug: Para ver donde cayó
-                    pausarCalculoAlturas = true;
-                    principalNpc.GoToActualPlatform();
+                    //print("--Entra for");
+
+                    Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
+
+                    float altura = positionNextPlatform.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
+                    float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
+                    float fuerzaY = obtenerFuerzaY(rb.mass, altura, distancia);
+
+                    //print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
+                    print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
+                    principalNpc.jumpRelative(0, fuerzaY, fuerzaX);
+
                     yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
-                    pausarCalculoAlturas = false;
+
+                    //bool platformChanged = actualPlatformId != principalNpc.GetActualPlatform().GetInstanceID();    //Comprobamos si sigue en la misma plataforma
+
+                    if (plataformaInternaFuePisada)
+                        contadorSaltosDespues++;
+
+                    if (principalNpc.InternalPlatformPressed())
+                    {
+                        plataformaInternaFuePisada = true;
+                        print("-----El NPC SI LLEGO!");
+                    }
+                    else
+                    {
+                        print("-----El NPC NO LLEGO");
+                    }
+                        
+
+
+                    Instance casoAdecidir = new Instance(casosEntrenamiento.numAttributes());
+                    casoAdecidir.setDataset(casosEntrenamiento);
+                    casoAdecidir.setValue(0, fuerzaX);
+                    casoAdecidir.setValue(1, fuerzaY);
+                    casoAdecidir.setValue(2, altura);
+                    casoAdecidir.setValue(3, distancia);
+                    casoAdecidir.setValue(4, principalNpc.InternalPlatformPressed() ? 1 : 0);
+                    yield return new WaitForSeconds(1.0f);
+                    casosEntrenamiento.add(casoAdecidir);
+
+                    principalNpc.ResetInternalPlatformPressed();
+                    //Si al menos 1 vez la plataforma interna fue pisada pero en el salto actual ya no lo fue superando el contador de numSaltosDespues, termina el bucle y vamos a la siguiente plataforma
+                    if (plataformaInternaFuePisada && contadorSaltosDespues >= numSaltosDespues)
+                        break;
+
+                    //if (platformChanged)
+                    //{
+                    //    break;  //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
+                    //}
+                    //else
+                    //{
+                    //    yield return new WaitForSeconds(0.5f);  //Debug: Para ver donde cayó
+                    //    pausarCalculoAlturas = true;
+                    //    principalNpc.GoToActualPlatform();
+                    //    yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+                    //    pausarCalculoAlturas = false;
+                    //}
+                    
+                    yield return new WaitForSeconds(0.5f);  //Debug: Para ver donde cayó
+                    //pausarCalculoAlturas = true;
+                    //principalNpc.GoToActualPlatform();
+                    //yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+                    //pausarCalculoAlturas = false;
+
                 }
-                //yield return new WaitForSeconds(1.5f);
+
+                principalNpc.NextPlatform();
+                principalNpc.GoToActualPlatform();
+                yield return new WaitUntil(() => (principalNpc.isJumping == false));
+
             }
+
+            print("Se crearon " + casosEntrenamiento.numInstances() + " casos de entrenamiento");
+
+
+
+            //GUARDADO DE LA EXPERIENCIA
+                
+            File salida = new File("Assets/WekaData/" + nombreArchivoDeDatosFinal); // Experiencia_Final_Perceptron_Neuronal.arff
+            if (!salida.exists())
+                System.IO.File.Create(salida.getAbsoluteFile().toString()).Dispose();
+            ArffSaver saver = new ArffSaver();
+            saver.setInstances(casosEntrenamiento);
+            saver.setFile(salida);
+            saver.writeBatch();
         }
-        print("Se crearon " + casosEntrenamiento.numInstances() + " casos de entrenamiento");
+
+
+
+
+        //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
+        saberPredecirFuerzaZ = new MultilayerPerceptron();                                               //Algoritmo Arbol de Regresion M5P
+        saberPredecirFuerzaZ.setHiddenLayers("4");
+        casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
+        saberPredecirFuerzaZ.buildClassifier(casosEntrenamiento);                        //REALIZAR EL APRENDIZAJE
+
+        principalNpc.SetPrediction();
+
+
+        //Prueba(ESTO DEBERIA DE ESTAR DENTRO DEL UPDATE):
+        principalNpc.SetFinished(false);
+        principalNpc.GoToSpawn();
+
+        yield return new WaitUntil(() => (principalNpc.isJumping == false));
+        Time.timeScale = 1;
+
+        Vector3 pnp = principalNpc.GetNextPlatform().transform.position;
+
+        float alt = pnp.y - (transform.position.y - (collider.bounds.size.y / 2.0f)); //altura desde los pies del NPC hasta el medio de la plataforma
+        float dis = Vector3.Distance(transform.position, new Vector3(pnp.x, transform.position.y, pnp.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
+        float fY = obtenerFuerzaY(rb.mass, alt, dis);
+
+        Instance casoPrueba = new Instance(casosEntrenamiento.numAttributes());
+        casoPrueba.setDataset(casosEntrenamiento);
+        casoPrueba.setValue(1, fY);
+        casoPrueba.setValue(2, alt);
+        casoPrueba.setValue(3, dis);
+        casoPrueba.setValue(4, 1);
+        float fZ = (float)saberPredecirFuerzaZ.classifyInstance(casoPrueba);                          //Predice FuerzaZ
+
+        print("Fuerza en Z: " + fZ + ". Fuerza en Y: " + fY);
+        principalNpc.jumpRelative(0, fY, fZ);
+
+        //yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+
     }
 
 

@@ -22,26 +22,70 @@ public class InternalPlatform : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "NPC" && nextPlatform != null)
+        if (other.gameObject.tag == "NPC")
         {
-            print("---Plataforma interna pisada");
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            print("....NextPlatformId: " + principalNpc.GetNextPlatform().GetInstanceID() + ". thisID: " + gameObject.GetInstanceID());
-            if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())//Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+            //if (principalNpc.isLearing())
+            //{
+            //    if (nextPlatform != null)
+            //    {
+            //        if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())//Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+            //        {
+            //            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            //            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            //            principalNpc.GoToActualPlatform();
+            //        }
+            //        else
+            //        {
+            //            principalNpc.isJumping = false;
+            //        }
+                    
+            //    }
+            //    else
+            //    {
+            //        principalNpc.SetFinished(true);
+            //        principalNpc.isJumping = false;
+            //    }
+            //}
+            //else
+            //{
+            if (nextPlatform != null)
             {
-                other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                print("--Interrnal Platform: ChangeNextPlatform and go actual Platform");
-                principalNpc.ChangeNextPlatform(nextPlatform);
-                principalNpc.GoToActualPlatform();
+                //print("---Plataforma interna pisada");
+                //print("....NextPlatformId: " + principalNpc.GetNextPlatform().GetInstanceID() + ". thisID: " + gameObject.GetInstanceID());
+                if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+                {
+                    principalNpc.SetInternalPlatformPressed();
+                    other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                    //print("--Interrnal Platform: ChangeNextPlatform and go actual Platform");
+                    if (principalNpc.isPrediction())
+                        principalNpc.ChangeNextPlatform(nextPlatform);
+                    principalNpc.GoToActualPlatform();
+                }
+                else
+                {
+                    principalNpc.isJumping = false;
+                }
+                //principalNpc.isJumping = false;
             }
-            principalNpc.isJumping = false;
-        }
-        else if (other.gameObject.tag == "NPC" && nextPlatform == null)
-        {
-            PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            principalNpc.SetFinished();
-            principalNpc.isJumping = false;
+            else
+            {
+                if (principalNpc.isPrediction()){
+                    principalNpc.SetFinished(true);
+                    principalNpc.isJumping = false;
+                } 
+                else
+                {
+                    if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())
+                        principalNpc.SetInternalPlatformPressed();
+                    principalNpc.GoToActualPlatform();
+                }
+                
+            }
+            //}
+            
+            
         }
     }
 }

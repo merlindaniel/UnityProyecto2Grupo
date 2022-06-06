@@ -28,7 +28,7 @@ public class Platform : MonoBehaviour
         } else if (other.gameObject.tag == "NPC" && nextPlatform == null)
         {
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            principalNpc.SetFinished();
+            principalNpc.SetFinished(true);
             principalNpc.isJumping = false;
         }
     }
