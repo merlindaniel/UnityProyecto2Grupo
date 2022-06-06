@@ -38,7 +38,6 @@ public class JumpingAI : MonoBehaviour
 
     void Start()
     {
-        Time.timeScale = 2;
         collider = GetComponent<Collider>();
         
         principalNpc = GetComponent<PrincipalNPC>();
@@ -60,18 +59,13 @@ public class JumpingAI : MonoBehaviour
         while (principalNpc.GetNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
         {
             //print("--Entra while");
+            int actualPlatformId = principalNpc.GetActualPlatform().GetInstanceID();
+
 
             for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
             {
                 //print("--Entra for");
-                int nextNextPlatformId = -1;
-                try
-                {
-                    nextNextPlatformId = principalNpc.GetNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
-                } catch(NullReferenceException ex)
-                {
-                    nextNextPlatformId = principalNpc.GetNextPlatform().GetComponentInChildren<InternalPlatform>().nextPlatform.GetInstanceID();
-                }
+                
                 
 
                 Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
@@ -88,12 +82,9 @@ public class JumpingAI : MonoBehaviour
 
                 yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
 
+                bool platformChanged = actualPlatformId != principalNpc.GetActualPlatform().GetInstanceID();//Comprobamos si sigue en la misma plataforma
 
-                int actualNextPlatformId = principalNpc.GetNextPlatform().GetInstanceID();
-
-                int resultado = nextNextPlatformId == actualNextPlatformId ? 1 : 0;
-
-                if (resultado == 1)
+                if (platformChanged)
                     print("-----El NPC SI LLEGO!");
                 else
                     print("-----El NPC NO LLEGO"); 
@@ -105,11 +96,11 @@ public class JumpingAI : MonoBehaviour
                 casoAdecidir.setValue(1, fuerzaY);
                 casoAdecidir.setValue(2, altura);
                 casoAdecidir.setValue(3, distancia);
-                casoAdecidir.setValue(4, resultado);
-
+                casoAdecidir.setValue(4, platformChanged ? 1 : 0);
+                yield return new WaitForSeconds(1f);
                 casosEntrenamiento.add(casoAdecidir);
 
-                if (resultado == 1) {
+                if (platformChanged) {
                     break;  //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
                 }
                 else

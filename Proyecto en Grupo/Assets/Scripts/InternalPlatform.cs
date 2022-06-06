@@ -25,11 +25,16 @@ public class InternalPlatform : MonoBehaviour
         if (other.gameObject.tag == "NPC" && nextPlatform != null)
         {
             print("---Plataforma interna pisada");
-            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            if (principalNpc.GetNextPlatform().GetInstanceID() == GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+            print("....NextPlatformId: " + principalNpc.GetNextPlatform().GetInstanceID() + ". thisID: " + gameObject.GetInstanceID());
+            if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())//Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+            {
+                other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                print("--Interrnal Platform: ChangeNextPlatform and go actual Platform");
                 principalNpc.ChangeNextPlatform(nextPlatform);
+                principalNpc.GoToActualPlatform();
+            }
             principalNpc.isJumping = false;
         }
         else if (other.gameObject.tag == "NPC" && nextPlatform == null)

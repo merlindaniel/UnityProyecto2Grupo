@@ -12,12 +12,13 @@ public class PrincipalNPC : MonoBehaviour
     bool finished; //Si el NPC llego a la meta
     public bool isJumping; //Si el NPC se encuentra en el aire
 
-    Rigidbody rigidbody;
+    Rigidbody rb;
 
     float npcHeight;
 
     private void Awake()
     {
+        Time.timeScale = 3;
         respawn = GameObject.FindGameObjectWithTag("Respawn");
 
         actualPlatform = respawn;
@@ -34,7 +35,7 @@ public class PrincipalNPC : MonoBehaviour
     {
         finished = false;
         isJumping = false;
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -76,7 +77,7 @@ public class PrincipalNPC : MonoBehaviour
     public void jumpRelative(float forceX, float forceY, float forceZ)
     {
         isJumping = true;
-        rigidbody.AddRelativeForce(new Vector3(forceX, forceY, forceZ), ForceMode.Impulse);
+        rb.AddRelativeForce(new Vector3(forceX, forceY, forceZ), ForceMode.Impulse);
     }
 
 
@@ -85,7 +86,7 @@ public class PrincipalNPC : MonoBehaviour
         finished = true;
         actualPlatform = nextPlatform;
         nextPlatform = null;
-        rigidbody.isKinematic = true;
+        rb.isKinematic = true;
     }
 
     public bool IsFinished()
@@ -96,5 +97,10 @@ public class PrincipalNPC : MonoBehaviour
     public GameObject GetNextPlatform()
     {
         return nextPlatform;
+    }
+
+    public GameObject GetActualPlatform()
+    {
+        return actualPlatform;
     }
 }
