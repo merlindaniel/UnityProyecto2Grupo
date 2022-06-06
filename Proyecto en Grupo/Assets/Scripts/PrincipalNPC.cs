@@ -25,7 +25,11 @@ public class PrincipalNPC : MonoBehaviour
         nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
         transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + 10, respawn.transform.position.z);
         if (nextPlatform != null)
+        {
             transform.LookAt(nextPlatform.transform.position);
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        }
+            
 
         npcHeight = GetComponent<Collider>().bounds.size.y;
     }
@@ -65,13 +69,13 @@ public class PrincipalNPC : MonoBehaviour
 
     public void ChangeNextPlatform(GameObject nextPlatform)
     {
-        //if (!this.nextPlatform.GetInstanceID().Equals(nextPlatform.GetInstanceID()))
-        //{
         this.actualPlatform = this.nextPlatform;
         this.nextPlatform = nextPlatform;
         if (nextPlatform != null)
+        {
             transform.LookAt(nextPlatform.transform.position);
-        //}
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        }
     }
 
     public void jumpRelative(float forceX, float forceY, float forceZ)

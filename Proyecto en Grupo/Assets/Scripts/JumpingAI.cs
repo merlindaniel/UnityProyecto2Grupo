@@ -65,9 +65,9 @@ public class JumpingAI : MonoBehaviour
             for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
             {
                 //print("--Entra for");
-                
-                
 
+
+                
                 Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
 
                 float altura = principalNpc.GetNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
