@@ -57,7 +57,7 @@ public class JumpingAI : MonoBehaviour
 
         yield return new WaitForSeconds(3.0f);
 
-        while (principalNpc.getNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
+        while (principalNpc.GetNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
         {
             //print("--Entra while");
 
@@ -67,16 +67,16 @@ public class JumpingAI : MonoBehaviour
                 int nextNextPlatformId = -1;
                 try
                 {
-                    nextNextPlatformId = principalNpc.getNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
+                    nextNextPlatformId = principalNpc.GetNextPlatform().GetComponent<Platform>().nextPlatform.GetInstanceID();
                 } catch(NullReferenceException ex)
                 {
-                    nextNextPlatformId = principalNpc.getNextPlatform().GetComponentInChildren<InternalPlatform>().nextPlatform.GetInstanceID();
+                    nextNextPlatformId = principalNpc.GetNextPlatform().GetComponentInChildren<InternalPlatform>().nextPlatform.GetInstanceID();
                 }
                 
 
-                Vector3 positionNextPlatform = principalNpc.getNextPlatform().transform.position;
+                Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
 
-                float altura = principalNpc.getNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
+                float altura = principalNpc.GetNextPlatform().transform.position.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
                 float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
                 float fuerzaY = obtenerFuerzaY(rb.mass, altura, distancia);
 
@@ -89,7 +89,7 @@ public class JumpingAI : MonoBehaviour
                 yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
 
 
-                int actualNextPlatformId = principalNpc.getNextPlatform().GetInstanceID();
+                int actualNextPlatformId = principalNpc.GetNextPlatform().GetInstanceID();
 
                 int resultado = nextNextPlatformId == actualNextPlatformId ? 1 : 0;
 
@@ -114,9 +114,9 @@ public class JumpingAI : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(0.5f);  //Para ver donde cayó
+                    yield return new WaitForSeconds(0.5f);  //Debug: Para ver donde cayó
                     pausarCalculoAlturas = true;
-                    principalNpc.goToSpawn();
+                    principalNpc.GoToActualPlatform();
                     yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
                     pausarCalculoAlturas = false;
                 }

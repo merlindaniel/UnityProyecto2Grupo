@@ -22,12 +22,13 @@ public class Platform : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "NPC" && nextPlatform != null) {
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            principalNpc.changeNextPlatform(nextPlatform);
+            if (principalNpc.GetNextPlatform().GetInstanceID() == GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+                principalNpc.ChangeNextPlatform(nextPlatform);
             principalNpc.isJumping = false;
         } else if (other.gameObject.tag == "NPC" && nextPlatform == null)
         {
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            principalNpc.setFinished();
+            principalNpc.SetFinished();
             principalNpc.isJumping = false;
         }
     }
