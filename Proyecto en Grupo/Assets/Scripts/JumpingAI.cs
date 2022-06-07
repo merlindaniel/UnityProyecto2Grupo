@@ -157,8 +157,11 @@ public class JumpingAI : MonoBehaviour
                 }
 
                 principalNpc.NextPlatform();
-                principalNpc.GoToActualPlatform();
-                yield return new WaitUntil(() => (principalNpc.isJumping == false));
+                if (principalNpc.GetNextPlatform() != null)
+                {
+                    principalNpc.GoToActualPlatform();
+                    yield return new WaitUntil(() => (principalNpc.isJumping == false));
+                }
 
             }
 
@@ -181,17 +184,21 @@ public class JumpingAI : MonoBehaviour
 
 
         //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
+        print("----EMPIEZA GENERACION DEL MODELO");
         saberPredecirFuerzaZ = new MultilayerPerceptron();                                               //Algoritmo Arbol de Regresion M5P
-        saberPredecirFuerzaZ.setHiddenLayers("4");
+        saberPredecirFuerzaZ.setHiddenLayers("5,5,5");
+        saberPredecirFuerzaZ.setTrainingTime(5500);
+        //saberPredecirFuerzaZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
         casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
         saberPredecirFuerzaZ.buildClassifier(casosEntrenamiento);                        //REALIZAR EL APRENDIZAJE
+        print("----TERMINA GENERACION DEL MODELO");
 
-        principalNpc.SetPrediction();
 
 
         //Prueba(ESTO DEBERIA DE ESTAR DENTRO DEL UPDATE):
         principalNpc.SetFinished(false);
         principalNpc.GoToSpawn();
+        principalNpc.SetPrediction();
 
         yield return new WaitUntil(() => (principalNpc.isJumping == false));
         Time.timeScale = 1;

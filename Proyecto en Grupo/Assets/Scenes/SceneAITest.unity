@@ -1874,9 +1874,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 1
-  nombreArchivoDeDatosInicial: Experiencia_Inicial.arff
-  nombreArchivoDeDatosFinal: basura.arff
+  realizarEntrenamiento: 0
+  nombreArchivoDeDatosInicial: basura.arff
+  nombreArchivoDeDatosFinal: 
   numSaltosDespues: 10
 --- !u!114 &718552888
 MonoBehaviour:
