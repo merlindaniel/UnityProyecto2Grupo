@@ -20,8 +20,6 @@ public class Ground : MonoBehaviour
         if (other.gameObject.tag == "NPC") {
             print("-----------TOCA SUELO");
             other.gameObject.GetComponent<PrincipalNPC>().GoToActualPlatform();
-            //Transform spawnTransform = GameObject.FindGameObjectWithTag("Respawn").transform;
-            //other.transform.position = new Vector3(spawnTransform.position.x, spawnTransform.position.y + 10, spawnTransform.position.z);
         }
         
     }

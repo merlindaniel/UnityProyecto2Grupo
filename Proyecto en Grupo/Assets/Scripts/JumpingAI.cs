@@ -21,9 +21,10 @@ public class JumpingAI : MonoBehaviour
     //IA
     weka.classifiers.functions.MultilayerPerceptron saberPredecirFuerzaZ;
     public bool realizarEntrenamiento;
+    public int numAlturaDistanciaDistinta;     //Numero de veces que se desea que la plataforma tenga una altura-distancia distinta
     public string nombreArchivoDeDatosInicial;
     public string nombreArchivoDeDatosFinal;    //Se guardara los datos en este archivo si se desea realizar un entrenamiento (bool realizarEntrenamiento)
-    public int numSaltosDespues; //Numero de saltos que realizará despues de caer en dentro de la plataforma interna
+    public int numSaltosDespues;                //Numero de saltos que realizará despues de caer en dentro de la plataforma interna
     int contadorSaltosDespues;
 
     //UI
@@ -35,7 +36,7 @@ public class JumpingAI : MonoBehaviour
 
     //Factores
     const float factorFuerzaX = 0.005f;
-    const float factorIncAltura = 2.0f;
+    const float factorIncAltura = 1.5f;
     const float valorMaximoX = 10000;
 
     weka.core.Instances casosEntrenamiento;
@@ -80,16 +81,18 @@ public class JumpingAI : MonoBehaviour
         if (realizarEntrenamiento)
         {
             print("Fase de entrenamiento: Inicializada");
-            while (principalNpc.GetNextPlatform() != null)  //Si no hay mas plataformas terminamos el bucle
+            for (int i=0; i<numAlturaDistanciaDistinta; i++)
             {
                 //print("--Entra while");
-                int actualPlatformId = principalNpc.GetActualPlatform().GetInstanceID();
+                int nextPlatformId = principalNpc.GetNextPlatform().GetInstanceID();
                 bool plataformaInternaFuePisada = false;   //Para saber si la plataforma fue pisada al menos 1 vez
                 contadorSaltosDespues = 0;
 
                 for (float fuerzaX = 0; fuerzaX < valorMaximoX; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
                 {
                     //print("--Entra for");
+                    
+
 
                     Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
 
@@ -102,66 +105,61 @@ public class JumpingAI : MonoBehaviour
                     principalNpc.jumpRelative(0, fuerzaY, fuerzaX);
 
                     yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+    
 
-                    //bool platformChanged = actualPlatformId != principalNpc.GetActualPlatform().GetInstanceID();    //Comprobamos si sigue en la misma plataforma
+                    bool platformChanged = nextPlatformId == principalNpc.GetActualPlatform().GetInstanceID();    //Comprobamos si sigue en la misma plataforma
 
-                    if (plataformaInternaFuePisada)
-                        contadorSaltosDespues++;
-
-                    if (principalNpc.InternalPlatformPressed())
-                    {
-                        plataformaInternaFuePisada = true;
+                    if (platformChanged) {
                         print("-----El NPC SI LLEGO!");
+                        yield return new WaitForSeconds(1f);  //Debug: Para ver donde cayó
+                        plataformaInternaFuePisada = true;
+                        //principalNpc.SetFinished(false);
                     }
                     else
                     {
                         print("-----El NPC NO LLEGO");
                     }
-                        
 
-
+                    
+                    //Guardamos los datos
                     Instance casoAdecidir = new Instance(casosEntrenamiento.numAttributes());
                     casoAdecidir.setDataset(casosEntrenamiento);
                     casoAdecidir.setValue(0, fuerzaX);
                     casoAdecidir.setValue(1, fuerzaY);
                     casoAdecidir.setValue(2, altura);
                     casoAdecidir.setValue(3, distancia);
-                    casoAdecidir.setValue(4, principalNpc.InternalPlatformPressed() ? 1 : 0);
-                    yield return new WaitForSeconds(1.0f);
+                    casoAdecidir.setValue(4, platformChanged ? 1 : 0);
                     casosEntrenamiento.add(casoAdecidir);
 
-                    principalNpc.ResetInternalPlatformPressed();
+
+                    principalNpc.GoToSpawn();
+                    yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que vuelva al Spawn
+
+
                     //Si al menos 1 vez la plataforma interna fue pisada pero en el salto actual ya no lo fue superando el contador de numSaltosDespues, termina el bucle y vamos a la siguiente plataforma
-                    if (plataformaInternaFuePisada && contadorSaltosDespues >= numSaltosDespues)
+                    if (plataformaInternaFuePisada && contadorSaltosDespues >= numSaltosDespues+1)
                         break;
 
-                    //if (platformChanged)
-                    //{
-                    //    break;  //El NPC llego a la plataforma. Empezamos ahora con la siguiente plataforma.
-                    //}
-                    //else
-                    //{
-                    //    yield return new WaitForSeconds(0.5f);  //Debug: Para ver donde cayó
-                    //    pausarCalculoAlturas = true;
-                    //    principalNpc.GoToActualPlatform();
-                    //    yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
-                    //    pausarCalculoAlturas = false;
-                    //}
-                    
-                    yield return new WaitForSeconds(0.5f);  //Debug: Para ver donde cayó
-                    //pausarCalculoAlturas = true;
-                    //principalNpc.GoToActualPlatform();
-                    //yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
-                    //pausarCalculoAlturas = false;
+
+                    if (plataformaInternaFuePisada)
+                        contadorSaltosDespues++;
 
                 }
 
-                principalNpc.NextPlatform();
-                if (principalNpc.GetNextPlatform() != null)
-                {
-                    principalNpc.GoToActualPlatform();
-                    yield return new WaitUntil(() => (principalNpc.isJumping == false));
-                }
+                //Cambiamos posicion y altura de la plataforma de aprendizaje
+                print("-Cambiando posicion plataforma de entrenamiento");
+                GameObject learningInternalPlatform = principalNpc.GetNextPlatform();
+                GameObject learningPlatform = learningInternalPlatform.transform.parent.gameObject;
+                float z = learningPlatform.transform.position.z;
+                learningPlatform.transform.position = new Vector3(Random.Range(-264.5f, -50.0f), Random.Range(10.5f, 170.0f), z);//Area de entrenamiento
+
+
+                //principalNpc.NextPlatform();
+                //if (principalNpc.GetNextPlatform() != null)
+                //{
+                //    principalNpc.GoToActualPlatform();
+                //    yield return new WaitUntil(() => (principalNpc.isJumping == false));
+                //}
 
             }
 
@@ -186,8 +184,8 @@ public class JumpingAI : MonoBehaviour
         //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
         print("----EMPIEZA GENERACION DEL MODELO");
         saberPredecirFuerzaZ = new MultilayerPerceptron();                                               //Algoritmo Arbol de Regresion M5P
-        saberPredecirFuerzaZ.setHiddenLayers("5,5,5");
-        saberPredecirFuerzaZ.setTrainingTime(5500);
+        saberPredecirFuerzaZ.setHiddenLayers("6");
+        saberPredecirFuerzaZ.setTrainingTime(10000);
         //saberPredecirFuerzaZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
         casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
         saberPredecirFuerzaZ.buildClassifier(casosEntrenamiento);                        //REALIZAR EL APRENDIZAJE
@@ -196,9 +194,10 @@ public class JumpingAI : MonoBehaviour
 
 
         //Prueba(ESTO DEBERIA DE ESTAR DENTRO DEL UPDATE):
-        principalNpc.SetFinished(false);
-        principalNpc.GoToSpawn();
+        //principalNpc.SetFinished(false);
         principalNpc.SetPrediction();
+        principalNpc.GoToSpawn();
+        
 
         yield return new WaitUntil(() => (principalNpc.isJumping == false));
         Time.timeScale = 1;

@@ -27,6 +27,7 @@ public class PrincipalNPC : MonoBehaviour
 
     private void Awake()
     {
+        state = LEARNING;
         internalPlatformPressed = false;
         finished = false;
         isJumping = false;
@@ -35,7 +36,8 @@ public class PrincipalNPC : MonoBehaviour
         respawn = GameObject.FindGameObjectWithTag("Respawn");
 
         actualPlatform = respawn;
-        nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
+        nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformLearing;
+        //nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
         transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + 10, respawn.transform.position.z);
         if (nextPlatform != null)
         {
@@ -58,17 +60,27 @@ public class PrincipalNPC : MonoBehaviour
         
     }
 
-    public void GoToSpawn()
+    private void LookNextPlatform()
     {
-        isJumping = true; //Spawnea en al aire. Tomaremos esto como un salto
-        actualPlatform = respawn;
-        nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
-        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + 10, respawn.transform.position.z);
         if (nextPlatform != null)
         {
             transform.LookAt(nextPlatform.transform.position);
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
         }
+    }
+
+    public void GoToSpawn()
+    {
+        isJumping = true; //Spawnea en al aire. Tomaremos esto como un salto
+        actualPlatform = respawn;
+
+        if(state == LEARNING)
+            nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformLearing;
+        else
+            nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
+
+        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + 10, respawn.transform.position.z);
+        LookNextPlatform();
     }
 
 
@@ -77,22 +89,14 @@ public class PrincipalNPC : MonoBehaviour
         isJumping = true;
         float actPlatformHeight = actualPlatform.GetComponent<Collider>().bounds.size.y;
         transform.position = new Vector3(actualPlatform.transform.position.x, actualPlatform.transform.position.y + (actPlatformHeight/2f) + (npcHeight/2f) + 1, actualPlatform.transform.position.z);
-        if (nextPlatform != null)   //Para arreglar las microrotaciones que se producen en el salto anterior
-        {
-            transform.LookAt(nextPlatform.transform.position);
-            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        }
+        LookNextPlatform(); //Para arreglar las microrotaciones que se producen en el salto anterior
     }
 
     public void NextPlatform()
     {
         actualPlatform = nextPlatform;
         nextPlatform = nextPlatform.GetComponent<InternalPlatform>().nextPlatform;
-        if (nextPlatform != null)
-        {
-            transform.LookAt(nextPlatform.transform.position);
-            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        }
+        LookNextPlatform();
     }
 
     //Cambia la plataforma 
@@ -100,11 +104,7 @@ public class PrincipalNPC : MonoBehaviour
     {
         this.actualPlatform = this.nextPlatform;
         this.nextPlatform = nextPlatform;
-        if (nextPlatform != null)
-        {
-            transform.LookAt(nextPlatform.transform.position);
-            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        }
+        LookNextPlatform();
     }
 
     public void jumpRelative(float forceX, float forceY, float forceZ)
@@ -118,18 +118,20 @@ public class PrincipalNPC : MonoBehaviour
 
     public void SetFinished(bool finish)
     {
-        if (finish)
-        {
-            finished = true;
-            actualPlatform = nextPlatform;
-            nextPlatform = null;
-            rb.isKinematic = true;
-        } else
-        {
-            finished = false;
-            rb.isKinematic = false;
-        }
-        
+        this.finished = finish;
+        rb.isKinematic = finish;
+        //if (finish)
+        //{
+        //    finished = true;
+        //    actualPlatform = nextPlatform;
+        //    nextPlatform = null;
+        //    rb.isKinematic = true;
+        //} else
+        //{
+        //    finished = false;
+        //    rb.isKinematic = false;
+        //}
+
     }
 
     public bool IsFinished()

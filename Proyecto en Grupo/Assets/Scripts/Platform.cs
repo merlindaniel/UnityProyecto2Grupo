@@ -7,7 +7,7 @@ public class Platform : MonoBehaviour
     public GameObject nextPlatform;
 
     public bool finalPlatform = false;
-
+    //ESTO ESTA EN DESUSO ACUALMENTE EN LA ESCENA SCENEIATEST
     // Start is called before the first frame update
     void Start()
     {
