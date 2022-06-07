@@ -57,7 +57,13 @@ public class PrincipalNPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (transform.position.y < -100)
+        {
+            rb.isKinematic = true;
+            rb.isKinematic = false;
+            GoToSpawn();
+        }
+            
     }
 
     private void LookNextPlatform()

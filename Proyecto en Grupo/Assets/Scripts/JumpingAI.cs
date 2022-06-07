@@ -36,7 +36,7 @@ public class JumpingAI : MonoBehaviour
 
     //Factores
     const float factorFuerzaX = 0.005f;
-    const float factorIncAltura = 1.5f;
+    const float factorIncAltura = 2f;
     const float valorMaximoX = 10000;
 
     weka.core.Instances casosEntrenamiento;
@@ -151,7 +151,7 @@ public class JumpingAI : MonoBehaviour
                 GameObject learningInternalPlatform = principalNpc.GetNextPlatform();
                 GameObject learningPlatform = learningInternalPlatform.transform.parent.gameObject;
                 float z = learningPlatform.transform.position.z;
-                learningPlatform.transform.position = new Vector3(Random.Range(-264.5f, -50.0f), Random.Range(10.5f, 170.0f), z);//Area de entrenamiento
+                learningPlatform.transform.position = new Vector3(Random.Range(-245.0f, -145.5f), Random.Range(14.0f, 50.0f), z);//Area de entrenamiento
 
 
                 //principalNpc.NextPlatform();
@@ -184,8 +184,8 @@ public class JumpingAI : MonoBehaviour
         //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
         print("----EMPIEZA GENERACION DEL MODELO");
         saberPredecirFuerzaZ = new MultilayerPerceptron();                                               //Algoritmo Arbol de Regresion M5P
-        saberPredecirFuerzaZ.setHiddenLayers("6");
-        saberPredecirFuerzaZ.setTrainingTime(10000);
+        saberPredecirFuerzaZ.setHiddenLayers("7,5");
+        saberPredecirFuerzaZ.setTrainingTime(2500);
         //saberPredecirFuerzaZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
         casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
         saberPredecirFuerzaZ.buildClassifier(casosEntrenamiento);                        //REALIZAR EL APRENDIZAJE
