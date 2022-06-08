@@ -52,38 +52,23 @@ public class InternalPlatform : MonoBehaviour
             if (nextPlatform != null)
             {
                 //print("---Plataforma interna pisada");
-                //print("....NextPlatformId: " + principalNpc.GetNextPlatform().GetInstanceID() + ". thisID: " + gameObject.GetInstanceID());
                 if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
                 {
-                    principalNpc.SetInternalPlatformPressed();
                     other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                    //print("--Interrnal Platform: ChangeNextPlatform and go actual Platform");
-                    if (principalNpc.isPrediction())
-                        principalNpc.ChangeNextPlatform(nextPlatform);
-                    principalNpc.GoToActualPlatform();
+                    principalNpc.ChangeNextPlatform(nextPlatform);
+                    principalNpc.GoToActualPlatform();//Lo posicionamos en el centro de la plataforma
                 }
                 else
                 {
                     principalNpc.isJumping = false;
                 }
-                //principalNpc.isJumping = false;
             }
             else
             {
-                if (principalNpc.isPrediction()){
-                    principalNpc.SetFinished(true);
-                    principalNpc.isJumping = false;
-                } 
-                else
-                {
-                    if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())
-                        principalNpc.SetInternalPlatformPressed();
-                    principalNpc.GoToActualPlatform();
-                }
-                
+                principalNpc.SetFinished(true);
+                principalNpc.isJumping = false;
             }
-            //}
             
             
         }

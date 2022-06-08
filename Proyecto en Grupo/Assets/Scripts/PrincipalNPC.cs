@@ -15,7 +15,7 @@ public class PrincipalNPC : MonoBehaviour
     float npcHeight; //Altura del NPC
     
     public bool isJumping; //Si el NPC se encuentra en el aire
-    bool internalPlatformPressed;    //Indica si la plataforma interna fue pisada alguna vez. Nos ayudara a conocer si el NPC pisó o no la plataforma. Nota: Hay que resetar esto cada vez que saltemos
+    //bool internalPlatformPressed;    //Indica si la plataforma interna fue pisada alguna vez. Nos ayudara a conocer si el NPC pisó o no la plataforma. Nota: Hay que resetar esto cada vez que saltemos
 
     public float timeScaleGame;
 
@@ -28,7 +28,7 @@ public class PrincipalNPC : MonoBehaviour
     private void Awake()
     {
         state = LEARNING;
-        internalPlatformPressed = false;
+        //internalPlatformPressed = false;
         finished = false;
         isJumping = false;
         npcHeight = GetComponent<Collider>().bounds.size.y;
@@ -98,12 +98,12 @@ public class PrincipalNPC : MonoBehaviour
         LookNextPlatform(); //Para arreglar las microrotaciones que se producen en el salto anterior
     }
 
-    public void NextPlatform()
-    {
-        actualPlatform = nextPlatform;
-        nextPlatform = nextPlatform.GetComponent<InternalPlatform>().nextPlatform;
-        LookNextPlatform();
-    }
+    //public void NextPlatform()
+    //{
+    //    actualPlatform = nextPlatform;
+    //    nextPlatform = nextPlatform.GetComponent<InternalPlatform>().nextPlatform;
+    //    LookNextPlatform();
+    //}
 
     //Cambia la plataforma 
     public void ChangeNextPlatform(GameObject nextPlatform)
@@ -175,19 +175,19 @@ public class PrincipalNPC : MonoBehaviour
         state = PREDICTION;
     }
 
-    public bool InternalPlatformPressed()
-    {
-        return internalPlatformPressed;
-    }
+    //public bool InternalPlatformPressed()
+    //{
+    //    return internalPlatformPressed;
+    //}
 
-    public void ResetInternalPlatformPressed()
-    {
-        internalPlatformPressed = false;
-    }
+    //public void ResetInternalPlatformPressed()
+    //{
+    //    internalPlatformPressed = false;
+    //}
 
-    public void SetInternalPlatformPressed()
-    {
-        internalPlatformPressed = true;
-    }
+    //public void SetInternalPlatformPressed()
+    //{
+    //    internalPlatformPressed = true;
+    //}
 
 }
