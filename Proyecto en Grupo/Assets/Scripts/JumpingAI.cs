@@ -19,7 +19,8 @@ using java.io;
 public class JumpingAI : MonoBehaviour
 {
     //IA
-    weka.classifiers.functions.MultilayerPerceptron saberPredecirFuerzaZ;
+    //weka.classifiers.functions.MultilayerPerceptron saberPredecirFuerzaZ;
+    weka.classifiers.trees.M5P saberPredecirFuerzaZ;
     public bool realizarEntrenamiento;
     public int numAlturaDistanciaDistinta;     //Numero de veces que se desea que la plataforma tenga una altura-distancia distinta
     public string nombreArchivoDeDatosInicial;
@@ -183,9 +184,10 @@ public class JumpingAI : MonoBehaviour
 
         //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
         print("----EMPIEZA GENERACION DEL MODELO");
-        saberPredecirFuerzaZ = new MultilayerPerceptron();                                               //Algoritmo Arbol de Regresion M5P
-        saberPredecirFuerzaZ.setHiddenLayers("7,5");
-        saberPredecirFuerzaZ.setTrainingTime(2500);
+        //saberPredecirFuerzaZ = new MultilayerPerceptron();
+        saberPredecirFuerzaZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
+        //saberPredecirFuerzaZ.setHiddenLayers("8,5");
+        //saberPredecirFuerzaZ.setTrainingTime(1000);
         //saberPredecirFuerzaZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
         casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
         saberPredecirFuerzaZ.buildClassifier(casosEntrenamiento);                        //REALIZAR EL APRENDIZAJE
