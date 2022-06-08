@@ -7,7 +7,7 @@ public class Platform : MonoBehaviour
     public GameObject nextPlatform;
 
     public bool finalPlatform = false;
-    //ESTO ESTA EN DESUSO ACUALMENTE EN LA ESCENA SCENEIATEST
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +19,7 @@ public class Platform : MonoBehaviour
     {
     }
 
+    //IMPORTANTE: ESTO ESTA EN DESUSO ACUALMENTE EN LA ESCENA SCENEIATEST
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "NPC" && nextPlatform != null) {
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
