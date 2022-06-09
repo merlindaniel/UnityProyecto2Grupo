@@ -1546,6 +1546,9 @@ MonoBehaviour:
   nombreArchivoDeDatosInicial: 
   nombreArchivoDeDatosFinal: 
   numSaltosDespues: 0
+  limiteFuerzaZSuperior: 0
+  limiteAlturaInferior: 0
+  limiteAlturaSuperior: 0
 --- !u!114 &616575226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1880,6 +1883,9 @@ MonoBehaviour:
   nombreArchivoDeDatosInicial: datos_V3_5500.arff
   nombreArchivoDeDatosFinal: 
   numSaltosDespues: 30
+  limiteFuerzaZSuperior: 0
+  limiteAlturaInferior: 0
+  limiteAlturaSuperior: 0
 --- !u!114 &718552888
 MonoBehaviour:
   m_ObjectHideFlags: 0
