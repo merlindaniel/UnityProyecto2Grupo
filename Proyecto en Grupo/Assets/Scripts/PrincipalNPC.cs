@@ -52,7 +52,7 @@ public class PrincipalNPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = timeScaleGame;
+        // Time.timeScale = timeScaleGame;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -123,8 +123,11 @@ public class PrincipalNPC : MonoBehaviour
         rb.AddRelativeForce(new Vector3(forceX, forceY, forceZ), ForceMode.Impulse);
     }
 
-
-
+    public void jump(float forceX, float forceY, float forceZ)
+    {
+        isJumping = true;
+        rb.AddForce(new Vector3(forceZ, forceY, 0), ForceMode.Impulse);
+    }
 
     public void SetFinished(bool finish)
     {

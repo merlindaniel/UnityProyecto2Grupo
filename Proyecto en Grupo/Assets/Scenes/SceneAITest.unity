@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44250324, g: 0.48466378, b: 0.53408325, a: 1}
+  m_IndirectSpecularColor: {r: 0.44257188, g: 0.48477173, b: 0.5342941, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1762,8 +1762,8 @@ GameObject:
   - component: {fileID: 718552884}
   - component: {fileID: 718552883}
   - component: {fileID: 718552882}
-  - component: {fileID: 718552888}
   - component: {fileID: 718552887}
+  - component: {fileID: 718552888}
   m_Layer: 0
   m_Name: NPC (1)
   m_TagString: NPC
@@ -1875,17 +1875,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 718552881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
+  m_Script: {fileID: 11500000, guid: e5b069ea25504bc4dbb531fd9bfae7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 0
-  numAlturaDistanciaDistinta: 500
-  nombreArchivoDeDatosInicial: datos_V3_5500.arff
-  nombreArchivoDeDatosFinal: 
-  numSaltosDespues: 30
-  limiteFuerzaZSuperior: 0
-  limiteAlturaInferior: 0
-  limiteAlturaSuperior: 0
+  isJumping: 0
+  timeScaleGame: 1
 --- !u!114 &718552888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,11 +1889,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 718552881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5b069ea25504bc4dbb531fd9bfae7d9, type: 3}
+  m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isJumping: 0
-  timeScaleGame: 2
+  realizarEntrenamiento: 0
+  numAlturaDistanciaDistinta: 0
+  nombreArchivoDeDatosInicial: datos_jose_1_2.arff
+  nombreArchivoDeDatosFinal: datos_jose_1_2.arff
+  numSaltosDespues: 0
+  limiteFuerzaZSuperior: 0
+  limiteAlturaInferior: 0
+  limiteAlturaSuperior: 0
 --- !u!1 &741677980
 GameObject:
   m_ObjectHideFlags: 0
@@ -6704,7 +6704,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5709024692489478982}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -235.4, y: 21.1, z: -456.1}
+  m_LocalPosition: {x: -244.48, y: 25.2, z: -456.19}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:

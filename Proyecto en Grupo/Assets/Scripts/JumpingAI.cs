@@ -19,8 +19,8 @@ using java.io;
 public class JumpingAI : MonoBehaviour
 {
     //IA
-    //weka.classifiers.functions.MultilayerPerceptron saberPredecirFuerzaZ;
-    weka.classifiers.trees.M5P saberPredecirFuerzaZ;
+    weka.classifiers.functions.MultilayerPerceptron saberPredecirFuerzaZ;
+    // weka.classifiers.trees.M5P saberPredecirFuerzaZ;
     public bool realizarEntrenamiento;
     public int numAlturaDistanciaDistinta;     //Numero de veces que se desea que la plataforma tenga una altura-distancia distinta
     public string nombreArchivoDeDatosInicial;
@@ -140,10 +140,11 @@ public class JumpingAI : MonoBehaviour
 
         //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
         print("----EMPIEZA GENERACION DEL MODELO");
-        ////saberPredecirFuerzaZ = new MultilayerPerceptron();
-        saberPredecirFuerzaZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
-        //saberPredecirFuerzaZ.setHiddenLayers("7,5,3");
-        //saberPredecirFuerzaZ.setTrainingTime(1000);
+        saberPredecirFuerzaZ = new MultilayerPerceptron();
+        // saberPredecirFuerzaZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
+        saberPredecirFuerzaZ.setHiddenLayers("7,5,3");
+        saberPredecirFuerzaZ.setTrainingTime(1000);
+        saberPredecirFuerzaZ.setLearningRate(0.2);
         //saberPredecirFuerzaZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
         casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
         saberPredecirFuerzaZ.buildClassifier(casosEntrenamiento);                        //REALIZAR EL APRENDIZAJE
@@ -163,9 +164,9 @@ public class JumpingAI : MonoBehaviour
         Vector3 pnp = principalNpc.GetNextPlatform().transform.position;
 
         //float alt = pnp.y - (transform.position.y - (collider.bounds.size.y / 2.0f)); //altura desde los pies del NPC hasta el medio de la plataforma
-        float alt = pnp.y - (transform.position.y - (principalNpc.GetNpcHeight() / 2));
+        float alt = pnp.y;
         //float dis = Vector3.Distance(transform.position, new Vector3(pnp.x, transform.position.y, pnp.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
-        float dis = Mathf.Abs(pnp.z-transform.position.z);
+        float dis = Mathf.Abs(pnp.x-transform.position.x);
         float fY = obtenerFuerzaY(rb.mass, alt);
 
         Instance casoPrueba = new Instance(casosEntrenamiento.numAttributes());
@@ -176,7 +177,7 @@ public class JumpingAI : MonoBehaviour
         //casoPrueba.setValue(4, 1);
         float fZ = (float)saberPredecirFuerzaZ.classifyInstance(casoPrueba);                          //Predice FuerzaZ
 
-        print("Fuerza en Z: " + fZ + ". Fuerza en Y: " + fY);
+        print("Fuerza en Z: " + fZ + ". Fuerza en Y: " + fY + ". Distancia: " + dis + ". Altura: " + alt);
         principalNpc.jumpRelative(0, fY, fZ);
 
         //yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
