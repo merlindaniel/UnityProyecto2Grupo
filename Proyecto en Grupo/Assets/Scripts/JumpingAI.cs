@@ -22,6 +22,11 @@ public class JumpingAI : MonoBehaviour
     //IA
     weka.classifiers.functions.MultilayerPerceptron AIModelFZ;
     // weka.classifiers.trees.M5P AIModelFZ;
+
+    [Header("Model Settings")]
+    public bool loadModel = false;
+    public string modelFile;
+    
     public string datasetFile;
 
     //UI
@@ -47,27 +52,40 @@ public class JumpingAI : MonoBehaviour
         mainNPC = GetComponent<PrincipalNPC>();
         rb = GetComponent<Rigidbody>();
 
+        Regex regex = new Regex(@"[a-zA-Z]+\w*\.model");
+        if (!regex.IsMatch(modelFile))
+            modelFile = "Modelo_Multilayer_Perceptron.model";
+
         //Cargamos el dataset
         LoadAndBuildModel();
     }
 
     private void LoadAndBuildModel()
     {
-        //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
-
         trainingDataset = new weka.core.Instances(new java.io.FileReader("Assets/WekaData/" + datasetFile));
-
-        //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
-        print("----EMPIEZA GENERACION DEL MODELO");
-        AIModelFZ = new MultilayerPerceptron();
-        // AIModelFZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
-        AIModelFZ.setHiddenLayers("7,5,3");
-        AIModelFZ.setTrainingTime(1000);
-        AIModelFZ.setLearningRate(0.2);
-        //AIModelFZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
-        trainingDataset.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
-        AIModelFZ.buildClassifier(trainingDataset);                        //REALIZAR EL APRENDIZAJE
-        print("----TERMINA GENERACION DEL MODELO");
+        //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
+        if (!loadModel)
+        {
+            //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
+            print("----EMPIEZA GENERACION DEL MODELO");
+            AIModelFZ = new MultilayerPerceptron();
+            // AIModelFZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
+            AIModelFZ.setHiddenLayers("7,5,3");
+            AIModelFZ.setTrainingTime(1000);
+            AIModelFZ.setLearningRate(0.2);
+            //AIModelFZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
+            trainingDataset.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
+            AIModelFZ.buildClassifier(trainingDataset);                        //CREAR MODELO
+            SerializationHelper.write("Assets/WekaData/" + modelFile, AIModelFZ);
+            print("----TERMINA GENERACION DEL MODELO");
+        }
+        else
+        {
+            print("----LECTURA DEL MODELO");
+            AIModelFZ = (MultilayerPerceptron) SerializationHelper.read("Assets/WekaData/" + modelFile);
+            print("----TERMINA LECTURA DEL MODELO");
+        }
+        
     }
 
     ///     Obtiene la Fuerza a aplicar en el eje Y aplicando la formula de lanzamiento verticial y la segunda ley de Newton

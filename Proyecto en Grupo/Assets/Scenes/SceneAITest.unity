@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44257188, g: 0.48477173, b: 0.5342941, a: 1}
+  m_IndirectSpecularColor: {r: 0.44250324, g: 0.48466378, b: 0.53408325, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1541,8 +1541,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadModel: 0
+  modelFile: 
   datasetFile: 
-  jump: 0
 --- !u!114 &616575226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1886,8 +1887,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadModel: 1
+  modelFile: prueba_modelo.model
   datasetFile: datos_jose_up_down_mejorado.arff
-  jump: 0
 --- !u!1 &741677980
 GameObject:
   m_ObjectHideFlags: 0
