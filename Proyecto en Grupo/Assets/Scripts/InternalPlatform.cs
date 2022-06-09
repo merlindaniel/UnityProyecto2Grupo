@@ -25,52 +25,22 @@ public class InternalPlatform : MonoBehaviour
         if (other.gameObject.tag == "NPC")
         {
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            //if (principalNpc.isLearing())
-            //{
-            //    if (nextPlatform != null)
-            //    {
-            //        if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())//Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
-            //        {
-            //            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            //            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            //            principalNpc.GoToActualPlatform();
-            //        }
-            //        else
-            //        {
-            //            principalNpc.isJumping = false;
-            //        }
-                    
-            //    }
-            //    else
-            //    {
-            //        principalNpc.SetFinished(true);
-            //        principalNpc.isJumping = false;
-            //    }
-            //}
-            //else
-            //{
+
             if (nextPlatform != null)
             {
                 //print("---Plataforma interna pisada");
                 if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
                 {
-                    other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                    other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                    principalNpc.ChangeNextPlatform(nextPlatform);
-                    principalNpc.GoToActualPlatform();//Lo posicionamos en el centro de la plataforma
-                }
-                else
-                {
-                    principalNpc.isJumping = false;
+                    print("hola");
+                    principalNpc.SetNextPlatform(nextPlatform);
+                    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    //Lo posicionamos en el centro de la plataforma
+                    // principalNpc.GoToActualPlatform(); 
+
+                    // Predecir y saltar
+                    other.gameObject.GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
                 }
             }
-            else
-            {
-                principalNpc.SetFinished(true);
-                principalNpc.isJumping = false;
-            }
-            
-            
         }
     }
 }

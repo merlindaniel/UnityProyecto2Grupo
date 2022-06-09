@@ -19,15 +19,8 @@ public class PrincipalNPC : MonoBehaviour
 
     public float timeScaleGame;
 
-
-    //---ESTADOS
-    string state; //Estado actual del NPC
-    const string LEARNING = "LEARNING";
-    const string PREDICTION = "PREDICTION";
-
     private void Awake()
     {
-        state = LEARNING;
         //internalPlatformPressed = false;
         finished = false;
         isJumping = false;
@@ -36,7 +29,7 @@ public class PrincipalNPC : MonoBehaviour
         respawn = GameObject.FindGameObjectWithTag("Respawn");
 
         actualPlatform = respawn;
-        nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformLearing;
+        nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
         //nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
         float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
         transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
@@ -65,7 +58,6 @@ public class PrincipalNPC : MonoBehaviour
             rb.isKinematic = false;
             GoToSpawn();
         }
-            
     }
 
     private void LookNextPlatform()
@@ -82,15 +74,13 @@ public class PrincipalNPC : MonoBehaviour
         isJumping = true; //Spawnea en al aire. Tomaremos esto como un salto
         actualPlatform = respawn;
 
-        if(state == LEARNING)
-            nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformLearing;
-        else
-            nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
+        nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
 
 
         float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
         transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
         LookNextPlatform();
+        GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
     }
 
 
@@ -102,15 +92,8 @@ public class PrincipalNPC : MonoBehaviour
         LookNextPlatform(); //Para arreglar las microrotaciones que se producen en el salto anterior
     }
 
-    //public void NextPlatform()
-    //{
-    //    actualPlatform = nextPlatform;
-    //    nextPlatform = nextPlatform.GetComponent<InternalPlatform>().nextPlatform;
-    //    LookNextPlatform();
-    //}
-
     //Cambia la plataforma 
-    public void ChangeNextPlatform(GameObject nextPlatform)
+    public void SetNextPlatform(GameObject nextPlatform)
     {
         this.actualPlatform = this.nextPlatform;
         this.nextPlatform = nextPlatform;
@@ -133,18 +116,6 @@ public class PrincipalNPC : MonoBehaviour
     {
         this.finished = finish;
         rb.isKinematic = finish;
-        //if (finish)
-        //{
-        //    finished = true;
-        //    actualPlatform = nextPlatform;
-        //    nextPlatform = null;
-        //    rb.isKinematic = true;
-        //} else
-        //{
-        //    finished = false;
-        //    rb.isKinematic = false;
-        //}
-
     }
 
     public bool IsFinished()
@@ -160,26 +131,6 @@ public class PrincipalNPC : MonoBehaviour
     public GameObject GetActualPlatform()
     {
         return actualPlatform;
-    }
-
-
-    public bool isLearing()
-    {
-        return state == LEARNING;
-    }
-
-    public void SetLearing()
-    {
-        state = LEARNING;
-    }
-
-    public bool isPrediction()
-    {
-        return state == PREDICTION;
-    }
-    public void SetPrediction()
-    {
-        state = PREDICTION;
     }
 
     public float GetNpcHeight()

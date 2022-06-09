@@ -1541,14 +1541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 0
-  numAlturaDistanciaDistinta: 0
-  nombreArchivoDeDatosInicial: 
-  nombreArchivoDeDatosFinal: 
-  numSaltosDespues: 0
-  limiteFuerzaZSuperior: 0
-  limiteAlturaInferior: 0
-  limiteAlturaSuperior: 0
+  datasetFile: 
+  jump: 0
 --- !u!114 &616575226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1892,14 +1886,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 0
-  numAlturaDistanciaDistinta: 0
-  nombreArchivoDeDatosInicial: datos_jose_1_2.arff
-  nombreArchivoDeDatosFinal: datos_jose_1_2.arff
-  numSaltosDespues: 0
-  limiteFuerzaZSuperior: 0
-  limiteAlturaInferior: 0
-  limiteAlturaSuperior: 0
+  datasetFile: datos_jose_up_down_mejorado.arff
+  jump: 0
 --- !u!1 &741677980
 GameObject:
   m_ObjectHideFlags: 0
@@ -3715,8 +3703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 629452028bd7ec642b878cb474771b8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextPlatformLearing: {fileID: 2251171688653853188}
-  nextPlatformPrediction: {fileID: 2251171688653853188}
+  nextPlatformPrediction: {fileID: 1243380711}
 --- !u!1 &1174145699
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,6 +3996,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239268901}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1243380711 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5145798049796463979, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
+  m_PrefabInstance: {fileID: 25495781}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1244062531
 PrefabInstance:
   m_ObjectHideFlags: 0

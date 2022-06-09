@@ -25,7 +25,7 @@ public class JumpingAIJose : MonoBehaviour
     
     public GameObject NPC, instanciaNPC;
 
-    public float alturaActual, posInicialZ, distanciaCalculadaZ;
+    public float alturaActual, posInicialZ, distanciaCalculadaZ = -float.MaxValue;
 
     //Factores
     //const float factorFuerzaX = 0.005f;

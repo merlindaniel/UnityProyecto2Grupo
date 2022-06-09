@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SpawnPlatform : MonoBehaviour
 {
-
-    public GameObject nextPlatformLearing;
     public GameObject nextPlatformPrediction;
 
     // Start is called before the first frame update
@@ -26,7 +24,9 @@ public class SpawnPlatform : MonoBehaviour
         {
             // other.gameObject.transform.LookAt(new Vector3(nextPlatformPrediction.transform.position.x, 0, nextPlatformPrediction.transform.position.z));
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            principalNpc.isJumping = false;
+            JumpingAI jumpingAI = other.gameObject.GetComponent<JumpingAI>();
+            principalNpc.SetNextPlatform(nextPlatformPrediction);
+            jumpingAI.PredictAndJumpToNextPlatform();
         }
     }
 }
