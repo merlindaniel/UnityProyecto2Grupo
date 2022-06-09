@@ -33,12 +33,13 @@ public class InternalPlatform : MonoBehaviour
                 {
                     print("hola");
                     principalNpc.SetNextPlatform(nextPlatform);
-                    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    //other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     //Lo posicionamos en el centro de la plataforma
                     // principalNpc.GoToActualPlatform(); 
 
                     // Predecir y saltar
-                    other.gameObject.GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
+                    other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    principalNpc.inNextPlatform = true;
                 }
             }
         }

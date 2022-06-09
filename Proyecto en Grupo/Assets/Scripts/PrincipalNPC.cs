@@ -13,6 +13,8 @@ public class PrincipalNPC : MonoBehaviour
 
     bool finished; //Si el NPC llego a la meta
     float npcHeight; //Altura del NPC
+    public bool inNextPlatform;
+    public float time;
     
     public bool isJumping; //Si el NPC se encuentra en el aire
     //bool internalPlatformPressed;    //Indica si la plataforma interna fue pisada alguna vez. Nos ayudara a conocer si el NPC pis� o no la plataforma. Nota: Hay que resetar esto cada vez que saltemos
@@ -24,6 +26,7 @@ public class PrincipalNPC : MonoBehaviour
         //internalPlatformPressed = false;
         finished = false;
         isJumping = false;
+        inNextPlatform = false;
         npcHeight = GetComponent<Collider>().bounds.size.y;
 
         respawn = GameObject.FindGameObjectWithTag("Respawn");
@@ -46,21 +49,37 @@ public class PrincipalNPC : MonoBehaviour
     void Start()
     {
         // Time.timeScale = timeScaleGame;
+        time = 0;
         rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (transform.position.y < -100)
         {
             rb.isKinematic = true;
             rb.isKinematic = false;
             GoToSpawn();
         }
+
+
+        if (inNextPlatform)
+        {
+            time += Time.deltaTime;
+            if (time >= 5)
+            {
+                rb.isKinematic = false;
+                inNextPlatform = false;
+                time = 0;
+                GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
+            }
+            
+        }
     }
 
-    private void LookNextPlatform()
+    public void LookNextPlatform()
     {
         if (nextPlatform != null)
         {
@@ -97,7 +116,7 @@ public class PrincipalNPC : MonoBehaviour
     {
         this.actualPlatform = this.nextPlatform;
         this.nextPlatform = nextPlatform;
-        LookNextPlatform();
+        //LookNextPlatform();
     }
 
     public void jumpRelative(float forceX, float forceY, float forceZ)

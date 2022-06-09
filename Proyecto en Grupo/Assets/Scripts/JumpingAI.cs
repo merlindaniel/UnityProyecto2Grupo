@@ -63,6 +63,8 @@ public class JumpingAI : MonoBehaviour
     private void LoadAndBuildModel()
     {
         trainingDataset = new weka.core.Instances(new java.io.FileReader("Assets/WekaData/" + datasetFile));
+        trainingDataset.setClassIndex(0);   //Queremos obtener Fuerza en Z
+
         //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
         if (!loadModel)
         {
@@ -74,7 +76,7 @@ public class JumpingAI : MonoBehaviour
             AIModelFZ.setTrainingTime(1000);
             AIModelFZ.setLearningRate(0.2);
             //AIModelFZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
-            trainingDataset.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
+                                                         
             AIModelFZ.buildClassifier(trainingDataset);                        //CREAR MODELO
             SerializationHelper.write("Assets/WekaData/" + modelFile, AIModelFZ);
             print("----TERMINA GENERACION DEL MODELO");
@@ -118,8 +120,10 @@ public class JumpingAI : MonoBehaviour
 
     public void PredictAndJumpToNextPlatform()
     {
+        mainNPC.LookNextPlatform();
         Vector3 pnp = mainNPC.GetNextPlatform().transform.position;
-        float height = pnp.y;
+        //float height = pnp.y;
+        float height = pnp.y - (transform.position.y - (mainNPC.GetNpcHeight() / 2));
         float distance = Mathf.Abs(pnp.x-transform.position.x);
         float fY = CalculateFY(rb.mass, height);
         float fZ = PredictFZ(fY, height, distance);
