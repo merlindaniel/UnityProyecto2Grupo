@@ -25,7 +25,7 @@ public class JumpingAI : MonoBehaviour
     public int numAlturaDistanciaDistinta;     //Numero de veces que se desea que la plataforma tenga una altura-distancia distinta
     public string nombreArchivoDeDatosInicial;
     public string nombreArchivoDeDatosFinal;    //Se guardara los datos en este archivo si se desea realizar un entrenamiento (bool realizarEntrenamiento)
-    public int numSaltosDespues;                //Numero de saltos que realizará despues de caer en dentro de la plataforma interna
+    public int numSaltosDespues;                //Numero de saltos que realizarï¿½ despues de caer en dentro de la plataforma interna
     int contadorSaltosDespues;
 
     //UI
@@ -90,10 +90,10 @@ public class JumpingAI : MonoBehaviour
             //contadorSaltosDespues = 0;
             int contador = 0;
 
-            for (float fuerzaX = 0; fuerzaX < valorMaximoX && contador < numAlturaDistanciaDistinta; fuerzaX = fuerzaX + factorFuerzaX * valorMaximoX)
+            for (; contador < numAlturaDistanciaDistinta;)
             {
                 //print("--Entra for");
-
+                float fuerzaX = Random.Range(0, 2000);
 
 
                 //Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
@@ -123,7 +123,7 @@ public class JumpingAI : MonoBehaviour
 
                 //if (platformChanged) {
                 //    print("-----El NPC SI LLEGO!");
-                //    yield return new WaitForSeconds(1f);  //Debug: Para ver donde cayó
+                //    yield return new WaitForSeconds(1f);  //Debug: Para ver donde cayï¿½
                 //    plataformaInternaFuePisada = true;
                 //}
                 //else

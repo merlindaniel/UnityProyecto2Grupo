@@ -15,7 +15,7 @@ public class PrincipalNPC : MonoBehaviour
     float npcHeight; //Altura del NPC
     
     public bool isJumping; //Si el NPC se encuentra en el aire
-    //bool internalPlatformPressed;    //Indica si la plataforma interna fue pisada alguna vez. Nos ayudara a conocer si el NPC pisó o no la plataforma. Nota: Hay que resetar esto cada vez que saltemos
+    //bool internalPlatformPressed;    //Indica si la plataforma interna fue pisada alguna vez. Nos ayudara a conocer si el NPC pisï¿½ o no la plataforma. Nota: Hay que resetar esto cada vez que saltemos
 
     public float timeScaleGame;
 
