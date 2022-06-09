@@ -37,6 +37,8 @@ public class JumpingAI : MonoBehaviour
     const float incHeightFactor = 2f;
     //const float valorMaximoX = 10000;
 
+    public float negativeDistanceOffset = 125f, negativeHeightOffset = 1f;
+
     weka.core.Instances trainingDataset;
 
     PrincipalNPC mainNPC;
@@ -93,10 +95,12 @@ public class JumpingAI : MonoBehaviour
     ///     Obtiene la Fuerza a aplicar en el eje Y aplicando la formula de lanzamiento verticial y la segunda ley de Newton
     float CalculateFY(float mass, float targetHeight)
     {
-        if (targetHeight > 0)
-            return mass * Mathf.Sqrt(targetHeight * 2.0f * 9.81f * incHeightFactor); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
-        else
-            return mass * 9.81f; //+ ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
+        return mass * Mathf.Sqrt(Math.Abs(targetHeight * 2.0f * 9.81f * incHeightFactor)); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
+
+        // if (targetHeight > 0)
+        //     return mass * Mathf.Sqrt(targetHeight * 2.0f * 9.81f * incHeightFactor); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
+        // else
+        //     return mass * 9.81f; //+ ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
     }
 
     // Update is called once per frame
@@ -123,8 +127,14 @@ public class JumpingAI : MonoBehaviour
         mainNPC.LookNextPlatform();
         Vector3 pnp = mainNPC.GetNextPlatform().transform.position;
         //float height = pnp.y;
-        float height = pnp.y - (transform.position.y - (mainNPC.GetNpcHeight() / 2));
-        float distance = Mathf.Abs(pnp.x-transform.position.x);
+        float height = (pnp.y - (transform.position.y - (mainNPC.GetNpcHeight() / 2))) * 1.5f;
+        float distance = 0.925f * Mathf.Sqrt (Mathf.Pow (Mathf.Abs (pnp.x - transform.position.x), 2f) + Mathf.Pow (Mathf.Abs (pnp.z - transform.position.z), 2f));
+        if (height < 0) 
+        {
+            height *= negativeHeightOffset;
+            distance *= 1 + (Math.Abs(height)/negativeDistanceOffset);
+        }
+        // if (height < 0) distance *= 1 + (Math.Abs(height)/407.5f);
         float fY = CalculateFY(rb.mass, height);
         float fZ = PredictFZ(fY, height, distance);
         print("Fuerza en Z: " + fZ + ". Fuerza en Y: " + fY + ". Distancia: " + distance + ". Altura: " + height);

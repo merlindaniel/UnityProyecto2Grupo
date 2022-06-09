@@ -155,15 +155,15 @@ MonoBehaviour:
   realizarEntrenamiento: 1
   nombreArchivoDeDatosInicial: Experiencia_inicial.arff
   nombreArchivoDeDatosFinal: datos_jose_2.arff
-  limiteFuerzaZSuperior: 3000
-  limiteAlturaInferior: -40
-  limiteAlturaSuperior: 0
+  limiteFuerzaZSuperior: 800
+  limiteAlturaInferior: 100
+  limiteAlturaSuperior: 200
   NPC: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
   instanciaNPC: {fileID: 0}
   alturaActual: 0
   posInicialZ: 0
   distanciaCalculadaZ: 0
-  slope: 20
+  slope: 10
 --- !u!4 &431373492
 Transform:
   m_ObjectHideFlags: 0
@@ -340,15 +340,15 @@ MonoBehaviour:
   realizarEntrenamiento: 1
   nombreArchivoDeDatosInicial: Experiencia_inicial.arff
   nombreArchivoDeDatosFinal: datos_jose_1.arff
-  limiteFuerzaZSuperior: 3000
-  limiteAlturaInferior: 1
-  limiteAlturaSuperior: 40
+  limiteFuerzaZSuperior: 800
+  limiteAlturaInferior: 40
+  limiteAlturaSuperior: 100
   NPC: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
   instanciaNPC: {fileID: 0}
   alturaActual: 0
   posInicialZ: 0
   distanciaCalculadaZ: 0
-  slope: 20
+  slope: 10
 --- !u!4 &1452812001
 Transform:
   m_ObjectHideFlags: 0

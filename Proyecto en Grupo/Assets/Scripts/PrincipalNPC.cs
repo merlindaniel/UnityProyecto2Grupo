@@ -21,6 +21,8 @@ public class PrincipalNPC : MonoBehaviour
 
     public float timeScaleGame;
 
+    public bool manualJump = false;
+
     private void Awake()
     {
         //internalPlatformPressed = false;
@@ -68,14 +70,24 @@ public class PrincipalNPC : MonoBehaviour
         if (inNextPlatform)
         {
             time += Time.deltaTime;
-            if (time >= 5)
+            if (time >= 0.1)
             {
                 rb.isKinematic = false;
+                LookNextPlatform();
+            }
+            if (time >= 0.3)
+            {
                 inNextPlatform = false;
                 time = 0;
                 GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
             }
-            
+        }
+
+        if (manualJump)
+        {
+            LookNextPlatform();
+            GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
+            manualJump = false;
         }
     }
 

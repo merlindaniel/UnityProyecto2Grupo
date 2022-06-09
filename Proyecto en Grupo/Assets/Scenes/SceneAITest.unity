@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44250324, g: 0.48466378, b: 0.53408325, a: 1}
+  m_IndirectSpecularColor: {r: 0.44257188, g: 0.48477173, b: 0.5342941, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -148,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.9
+      value: 25.7
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -250,7 +250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 42.08
+      value: 38.9
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1544,6 +1544,8 @@ MonoBehaviour:
   loadModel: 0
   modelFile: 
   datasetFile: 
+  negativeDistanceOffset: 125
+  negativeHeightOffset: 1
 --- !u!114 &616575226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1556,8 +1558,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b069ea25504bc4dbb531fd9bfae7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inNextPlatform: 0
+  time: 0
   isJumping: 0
   timeScaleGame: 0
+  manualJump: 0
 --- !u!1 &635932593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,8 +1878,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b069ea25504bc4dbb531fd9bfae7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inNextPlatform: 0
+  time: 0
   isJumping: 0
-  timeScaleGame: 1
+  timeScaleGame: 5
+  manualJump: 0
 --- !u!114 &718552888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1890,6 +1898,8 @@ MonoBehaviour:
   loadModel: 1
   modelFile: prueba_modelo.model
   datasetFile: datos_jose_up_down_mejorado.arff
+  negativeDistanceOffset: 610
+  negativeHeightOffset: 0.35
 --- !u!1 &741677980
 GameObject:
   m_ObjectHideFlags: 0
@@ -4028,7 +4038,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -318.94
+      value: -332.9
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4036,7 +4046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -448.68
+      value: -459.26
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4816,7 +4826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 83.6
+      value: 58.17
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5375,8 +5385,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1488299480}
     m_Modifications:
     - target: {fileID: 702416133006644329, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
+      propertyPath: nextPlatform
+      value: 
+      objectReference: {fileID: 1243380711}
+    - target: {fileID: 702416133006644329, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: finalPlatform
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1688514633694047273, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_Name
@@ -5388,11 +5402,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -361.1
+      value: -300.4
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 160.3
+      value: 138.5
       objectReference: {fileID: 0}
     - target: {fileID: 1784682696169596598, guid: d0073e55ae2f44f4a9b023c0b5500d3f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6117,6 +6131,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1987126155}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2009721494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2009721496}
+  - component: {fileID: 2009721495}
+  m_Layer: 0
+  m_Name: TimeScaleGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2009721495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009721494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2162444addc1a36419ace3090cf2bd2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeScaleGame: 5
+--- !u!4 &2009721496
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009721494}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -358.31226, y: 142.8735, z: -263.64423}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2028189043
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,9 @@ public class TimeScale : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Time.timeScale != timeScaleGame)
+        {
+            Time.timeScale = timeScaleGame;
+        }
     }
 }
