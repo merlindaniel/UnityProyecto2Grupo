@@ -179,6 +179,11 @@ public class PrincipalNPC : MonoBehaviour
         state = PREDICTION;
     }
 
+    public float GetNpcHeight()
+    {
+        return npcHeight;
+    }
+
     //public bool InternalPlatformPressed()
     //{
     //    return internalPlatformPressed;

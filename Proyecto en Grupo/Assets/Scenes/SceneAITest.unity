@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44257188, g: 0.48477173, b: 0.5342941, a: 1}
+  m_IndirectSpecularColor: {r: 0.44250324, g: 0.48466378, b: 0.53408325, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1876,7 +1876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   realizarEntrenamiento: 1
-  numAlturaDistanciaDistinta: 1000
+  numAlturaDistanciaDistinta: 500
   nombreArchivoDeDatosInicial: Experiencia_Inicial.arff
   nombreArchivoDeDatosFinal: datos_V3.arff
   numSaltosDespues: 30
@@ -1893,7 +1893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isJumping: 0
-  timeScaleGame: 40
+  timeScaleGame: 2
 --- !u!1 &741677980
 GameObject:
   m_ObjectHideFlags: 0

@@ -88,9 +88,8 @@ public class JumpingAI : MonoBehaviour
             //int nextPlatformId = principalNpc.GetNextPlatform().GetInstanceID();
             //bool plataformaInternaFuePisada = false;   //Para saber si la plataforma fue pisada al menos 1 vez
             //contadorSaltosDespues = 0;
-            int contador = 0;
 
-            for (; contador < numAlturaDistanciaDistinta;)
+            for (int i=0; i < numAlturaDistanciaDistinta;i++)
             {
                 //print("--Entra for");
                 float fuerzaX = Random.Range(0, 2000);
@@ -100,19 +99,23 @@ public class JumpingAI : MonoBehaviour
 
                 //float altura = positionNextPlatform.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
                 //float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
-                float posInicial = transform.position.z;
+                float posInicialZ = transform.position.z;
+                float posInicialY = transform.position.y;
+                //float posInicialZ = transform.position.z;
                 float altura = Random.Range(14.0f, 50.0f);
-                float fuerzaY = obtenerFuerzaY(rb.mass, altura);
+
+                float alturaRespectoNpc = altura - (posInicialY - (principalNpc.GetNpcHeight() / 2));
+                float fuerzaY = obtenerFuerzaY(rb.mass, alturaRespectoNpc);
 
                 //print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
-                print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY);
+                print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY + ". Alt respecto NPC: " + alturaRespectoNpc);
                 principalNpc.jumpRelative(0, fuerzaY, fuerzaX);
 
                 print("Esperamos...");
                 yield return new WaitUntil(() => (altura >= transform.position.y && rb.velocity.y<0));
 
                 print("Llega a la altura " + altura);
-                float distanciaZ = Mathf.Abs(posInicial - transform.position.z);
+                float distanciaZ = Mathf.Abs(posInicialZ - transform.position.z);
                     
                     
 
@@ -137,7 +140,7 @@ public class JumpingAI : MonoBehaviour
                 casoAdecidir.setDataset(casosEntrenamiento);
                 casoAdecidir.setValue(0, fuerzaX);
                 casoAdecidir.setValue(1, fuerzaY);
-                casoAdecidir.setValue(2, altura);
+                casoAdecidir.setValue(2, alturaRespectoNpc);
                 casoAdecidir.setValue(3, distanciaZ);
                 //casoAdecidir.setValue(4, platformChanged ? 1 : 0);
                 casosEntrenamiento.add(casoAdecidir);
@@ -154,7 +157,6 @@ public class JumpingAI : MonoBehaviour
 
                 //if (plataformaInternaFuePisada)
                 //    contadorSaltosDespues++;
-                contador++;
             }
 
                 //Cambiamos posicion y altura de la plataforma de aprendizaje
@@ -209,7 +211,8 @@ public class JumpingAI : MonoBehaviour
 
         Vector3 pnp = principalNpc.GetNextPlatform().transform.position;
 
-        float alt = pnp.y - (transform.position.y - (collider.bounds.size.y / 2.0f)); //altura desde los pies del NPC hasta el medio de la plataforma
+        //float alt = pnp.y - (transform.position.y - (collider.bounds.size.y / 2.0f)); //altura desde los pies del NPC hasta el medio de la plataforma
+        float alt = pnp.y - (transform.position.y - (principalNpc.GetNpcHeight() / 2));
         //float dis = Vector3.Distance(transform.position, new Vector3(pnp.x, transform.position.y, pnp.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
         float dis = Mathf.Abs(pnp.z-transform.position.z);
         float fY = obtenerFuerzaY(rb.mass, alt);
