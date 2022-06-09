@@ -38,7 +38,9 @@ public class PrincipalNPC : MonoBehaviour
         actualPlatform = respawn;
         nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformLearing;
         //nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
-        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + 10, respawn.transform.position.z);
+        float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
+        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
+
         if (nextPlatform != null)
         {
             transform.LookAt(nextPlatform.transform.position);
@@ -85,7 +87,9 @@ public class PrincipalNPC : MonoBehaviour
         else
             nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
 
-        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + 10, respawn.transform.position.z);
+
+        float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
+        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
         LookNextPlatform();
     }
 
