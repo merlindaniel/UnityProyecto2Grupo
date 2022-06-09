@@ -26,19 +26,20 @@ public class JumpingAI : MonoBehaviour
     public string nombreArchivoDeDatosInicial;
     public string nombreArchivoDeDatosFinal;    //Se guardara los datos en este archivo si se desea realizar un entrenamiento (bool realizarEntrenamiento)
     public int numSaltosDespues;                //Numero de saltos que realizar� despues de caer en dentro de la plataforma interna
-    int contadorSaltosDespues;
+
+    public int limiteFuerzaZSuperior;
+    public int limiteAlturaInferior;    //Como minimo debe ser 14
+    public int limiteAlturaSuperior;
+    
+
 
     //UI
-    Collider collider;
-    float alturaMax = -10000f;
-    float alturaMaxGeneral = -10000f;
-    bool pausarCalculoAlturas = false;
     string texto;
 
     //Factores
-    const float factorFuerzaX = 0.005f;
+    //const float factorFuerzaX = 0.005f;
     const float factorIncAltura = 2f;
-    const float valorMaximoX = 10000;
+    //const float valorMaximoX = 10000;
 
     weka.core.Instances casosEntrenamiento;
 
@@ -52,9 +53,6 @@ public class JumpingAI : MonoBehaviour
 
     void Start()
     {
-        contadorSaltosDespues = 0;
-
-        collider = GetComponent<Collider>();
         principalNpc = GetComponent<PrincipalNPC>();
         rb = GetComponent<Rigidbody>();
 
@@ -82,92 +80,45 @@ public class JumpingAI : MonoBehaviour
         if (realizarEntrenamiento)
         {
             print("Fase de entrenamiento: Inicializada");
-            //for (int i=0; i<numAlturaDistanciaDistinta; i++)
-            //{
-            //print("--Entra while");
-            //int nextPlatformId = principalNpc.GetNextPlatform().GetInstanceID();
-            //bool plataformaInternaFuePisada = false;   //Para saber si la plataforma fue pisada al menos 1 vez
-            //contadorSaltosDespues = 0;
 
-            for (int i=0; i < numAlturaDistanciaDistinta;i++)
+            for (int fuerzaZ=0; fuerzaZ <= limiteFuerzaZSuperior; fuerzaZ++)
             {
-                //print("--Entra for");
-                float fuerzaX = Random.Range(0, 2000);
+                for (int altura=limiteAlturaInferior; altura <= limiteAlturaSuperior; altura++)
+                {
+                    float posInicialZ = transform.position.z;
+                    float posInicialY = transform.position.y;
+                    //float fuerzaX = Random.Range(0, 2000);
+                    //float altura = Random.Range(14.0f, 50.0f);
+
+                    float alturaRespectoNpc = altura - (posInicialY - (principalNpc.GetNpcHeight() / 2));
+                    float fuerzaY = obtenerFuerzaY(rb.mass, alturaRespectoNpc);
+
+                    //print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
+                    print("Fuerza en Z: " + fuerzaZ + ". Fuerza en Y: " + fuerzaY + ". Alt respecto NPC: " + alturaRespectoNpc);
+                    principalNpc.jumpRelative(0, fuerzaY, fuerzaZ);
+
+                    print("Esperamos...");
+                    yield return new WaitUntil(() => (altura >= transform.position.y && rb.velocity.y < 0));
+
+                    print("Llega a la altura " + altura);
+                    float distanciaZ = Mathf.Abs(posInicialZ - transform.position.z);
 
 
-                //Vector3 positionNextPlatform = principalNpc.GetNextPlatform().transform.position;
-
-                //float altura = positionNextPlatform.y - (transform.position.y - (collider.bounds.size.y / 2f)); //altura desde los pies del NPC hasta el medio de la plataforma
-                //float distancia = Vector3.Distance(transform.position, new Vector3(positionNextPlatform.x, transform.position.y, positionNextPlatform.z)); //Distancia del NPC hasta el objetivo ignorando la altura (cateto contuguo desde el NPC)
-                float posInicialZ = transform.position.z;
-                float posInicialY = transform.position.y;
-                //float posInicialZ = transform.position.z;
-                float altura = Random.Range(14.0f, 50.0f);
-
-                float alturaRespectoNpc = altura - (posInicialY - (principalNpc.GetNpcHeight() / 2));
-                float fuerzaY = obtenerFuerzaY(rb.mass, alturaRespectoNpc);
-
-                //print("Masa: " + rb.mass + ". AlturaObjetivo: " + altura + ". DistanciaObjetivo: " + distancia);
-                print("Fuerza en X: " + fuerzaX + ". Fuerza en Y: " + fuerzaY + ". Alt respecto NPC: " + alturaRespectoNpc);
-                principalNpc.jumpRelative(0, fuerzaY, fuerzaX);
-
-                print("Esperamos...");
-                yield return new WaitUntil(() => (altura >= transform.position.y && rb.velocity.y<0));
-
-                print("Llega a la altura " + altura);
-                float distanciaZ = Mathf.Abs(posInicialZ - transform.position.z);
-                    
-                    
-
-                //yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que toque el terreno
+                    //Guardamos los datos
+                    Instance casoAdecidir = new Instance(casosEntrenamiento.numAttributes());
+                    casoAdecidir.setDataset(casosEntrenamiento);
+                    casoAdecidir.setValue(0, fuerzaZ);
+                    casoAdecidir.setValue(1, fuerzaY);
+                    casoAdecidir.setValue(2, alturaRespectoNpc);
+                    casoAdecidir.setValue(3, distanciaZ);
+                    casosEntrenamiento.add(casoAdecidir);
 
 
-                //bool platformChanged = nextPlatformId == principalNpc.GetActualPlatform().GetInstanceID();    //Comprobamos si sigue en la misma plataforma
-
-                //if (platformChanged) {
-                //    print("-----El NPC SI LLEGO!");
-                //    yield return new WaitForSeconds(1f);  //Debug: Para ver donde cay�
-                //    plataformaInternaFuePisada = true;
-                //}
-                //else
-                //{
-                //    print("-----El NPC NO LLEGO");
-                //}
-
-
-                //Guardamos los datos
-                Instance casoAdecidir = new Instance(casosEntrenamiento.numAttributes());
-                casoAdecidir.setDataset(casosEntrenamiento);
-                casoAdecidir.setValue(0, fuerzaX);
-                casoAdecidir.setValue(1, fuerzaY);
-                casoAdecidir.setValue(2, alturaRespectoNpc);
-                casoAdecidir.setValue(3, distanciaZ);
-                //casoAdecidir.setValue(4, platformChanged ? 1 : 0);
-                casosEntrenamiento.add(casoAdecidir);
-
-
-                principalNpc.GoToSpawn();
-                yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que vuelva al Spawn
-
-
-                //Si al menos 1 vez la plataforma interna fue pisada pero en el salto actual ya no lo fue superando el contador de numSaltosDespues, termina el bucle y vamos a la siguiente plataforma
-                //if (plataformaInternaFuePisada && contadorSaltosDespues >= numSaltosDespues+1)
-                //    break;
-
-
-                //if (plataformaInternaFuePisada)
-                //    contadorSaltosDespues++;
+                    principalNpc.GoToSpawn();
+                    yield return new WaitUntil(() => (principalNpc.isJumping == false)); //Esperamos a que vuelva al Spawn
+                }
             }
 
-                //Cambiamos posicion y altura de la plataforma de aprendizaje
-                //print("-Cambiando posicion plataforma de entrenamiento");
-                //GameObject learningInternalPlatform = principalNpc.GetNextPlatform();
-                //GameObject learningPlatform = learningInternalPlatform.transform.parent.gameObject;
-                //float z = learningPlatform.transform.position.z;
-                //learningPlatform.transform.position = new Vector3(Random.Range(-245.0f, -145.5f), Random.Range(14.0f, 50.0f), z);//Area de entrenamiento
-
-
-            //}
 
             print("Se crearon " + casosEntrenamiento.numInstances() + " casos de entrenamiento");
 
@@ -189,9 +140,9 @@ public class JumpingAI : MonoBehaviour
 
         //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
         print("----EMPIEZA GENERACION DEL MODELO");
-        //saberPredecirFuerzaZ = new MultilayerPerceptron();
+        ////saberPredecirFuerzaZ = new MultilayerPerceptron();
         saberPredecirFuerzaZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
-        //saberPredecirFuerzaZ.setHiddenLayers("8,5");
+        //saberPredecirFuerzaZ.setHiddenLayers("7,5,3");
         //saberPredecirFuerzaZ.setTrainingTime(1000);
         //saberPredecirFuerzaZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
         casosEntrenamiento.setClassIndex(0);                                             //Aprendemos la Fuerza en Z
@@ -206,7 +157,7 @@ public class JumpingAI : MonoBehaviour
         principalNpc.GoToSpawn();
         
 
-        yield return new WaitUntil(() => (principalNpc.isJumping == false));
+        //yield return new WaitUntil(() => (principalNpc.isJumping == false));
         Time.timeScale = 1;
 
         Vector3 pnp = principalNpc.GetNextPlatform().transform.position;

@@ -1875,10 +1875,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1833a1e3b2e8543bc5e7133a9f1724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 1
+  realizarEntrenamiento: 0
   numAlturaDistanciaDistinta: 500
-  nombreArchivoDeDatosInicial: Experiencia_Inicial.arff
-  nombreArchivoDeDatosFinal: datos_V3.arff
+  nombreArchivoDeDatosInicial: datos_V3_5500.arff
+  nombreArchivoDeDatosFinal: 
   numSaltosDespues: 30
 --- !u!114 &718552888
 MonoBehaviour:
@@ -6698,7 +6698,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5709024692489478982}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 347, y: 21.1, z: -456.1}
+  m_LocalPosition: {x: -235.4, y: 21.1, z: -456.1}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
