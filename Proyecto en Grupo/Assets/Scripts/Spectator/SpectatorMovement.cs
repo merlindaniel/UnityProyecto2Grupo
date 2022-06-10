@@ -2,20 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class SpectatorMovement : MonoBehaviour
 {
     private float speed;
     public float defaultSpeed = 1.5f;
 
-    public CharacterController controller;
-
-    public float mouseSensitivity = 100.0f;
-    //float xRotation = 0f;
-
+    private CharacterController controller;
 
     // Start is called before the first frame update
     void Start()
     {
+        controller = GetComponent<CharacterController>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked; 
         speed = defaultSpeed;

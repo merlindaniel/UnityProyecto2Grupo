@@ -7,7 +7,7 @@ public class Platform : MonoBehaviour
     public GameObject nextPlatform;
 
     public bool finalPlatform = false;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,22 +15,28 @@ public class Platform : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        
     }
 
-    //IMPORTANTE: ESTO ESTA EN DESUSO ACUALMENTE EN LA ESCENA SCENEIATEST
-    private void OnCollisionEnter(Collision other) {
-        if (other.gameObject.tag == "NPC" && nextPlatform != null) {
-            PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
-                principalNpc.SetNextPlatform(nextPlatform);
-            principalNpc.isJumping = false;
-        } else if (other.gameObject.tag == "NPC" && nextPlatform == null)
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "NPC")
         {
-            PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
-            principalNpc.SetFinished(true);
-            principalNpc.isJumping = false;
+            JumpingNPC jumpingNPC = other.gameObject.GetComponent<JumpingNPC>();
+
+            if (nextPlatform != null)
+            {
+                if (jumpingNPC.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+                {
+                    jumpingNPC.SetNextPlatform(nextPlatform);
+
+                    // Predecir y saltar
+                    other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    jumpingNPC.isSetToJump = true;
+                }
+            }
         }
     }
 }

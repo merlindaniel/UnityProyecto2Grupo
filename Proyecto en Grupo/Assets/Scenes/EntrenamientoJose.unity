@@ -134,12 +134,12 @@ GameObject:
   - component: {fileID: 431373492}
   - component: {fileID: 431373491}
   m_Layer: 0
-  m_Name: JumpingAIJose (1)
+  m_Name: TrainingAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &431373491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,17 +149,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 431373490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfed329b11b9bb469c6f189ec8174df, type: 3}
+  m_Script: {fileID: 11500000, guid: e39c72807645cdc42a881c10b4708b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nombreArchivoDeDatosInicial: Experiencia_inicial.arff
-  nombreArchivoDeDatosFinal: datos_jose_2.arff
-  generateModel: 0
-  modelFileName: 
-  limiteFuerzaZSuperior: 800
-  limiteAlturaInferior: 100
-  limiteAlturaSuperior: 200
-  slope: 10
+  outputFilename: output.arff
+  generateModel: 1
+  modelFilename: output_model.arff
+  maxFZ: 3000
+  minHeight: 0
+  maxHeight: 40
+  slopeFZ: 20
+  slopeHeight: 1
   NPCPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
 --- !u!4 &431373492
 Transform:
@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 1452812001}
   - component: {fileID: 1452812000}
   m_Layer: 0
-  m_Name: JumpingAIJose
+  m_Name: TrainingAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,17 +331,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1452811999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cfed329b11b9bb469c6f189ec8174df, type: 3}
+  m_Script: {fileID: 11500000, guid: e39c72807645cdc42a881c10b4708b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nombreArchivoDeDatosInicial: Experiencia_inicial.arff
-  nombreArchivoDeDatosFinal: Datos_up_down.arff
+  outputFilename: output.arff
   generateModel: 1
-  modelFileName: Modelo_up_down.model
-  limiteFuerzaZSuperior: 3000
-  limiteAlturaInferior: -50
-  limiteAlturaSuperior: 50
-  slope: 20
+  modelFilename: output_model.arff
+  maxFZ: 3000
+  minHeight: 0
+  maxHeight: 40
+  slopeFZ: 20
+  slopeHeight: 1
   NPCPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
 --- !u!4 &1452812001
 Transform:

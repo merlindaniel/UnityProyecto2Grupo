@@ -22,10 +22,10 @@ public class ExternalPlatform : MonoBehaviour
         {
             print("---Plataforma EXTERNA pisada. Volviendo al punto anterior");
             //Descartamos el salto y volvemos al punto anterior
-            PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
+            JumpingNPC principalNpc = other.gameObject.GetComponent<JumpingNPC>();
             principalNpc.SetFinished(true);
             principalNpc.SetFinished(false);
-            principalNpc.GoToActualPlatform();
+            principalNpc.GoToCurrentPlatform();
             
         }
     }

@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class SpectatorRotation : MonoBehaviour
 {
     public float mouseSensitivity = 100.0f;
     float xRotation = 0f;
 
-    public Transform parent;
-
+    Transform parent;
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; 
+        Cursor.lockState = CursorLockMode.Locked;
+        parent = transform.parent;
     }
 
     // Update is called once per frame
