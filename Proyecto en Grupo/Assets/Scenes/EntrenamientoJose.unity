@@ -334,10 +334,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfed329b11b9bb469c6f189ec8174df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nombreArchivoDeDatosInicial: Experiencia_Inicial.arff
-  nombreArchivoDeDatosFinal: modelo_merlin_mejorado_up_down_v2.arff
+  nombreArchivoDeDatosInicial: Experiencia_inicial.arff
+  nombreArchivoDeDatosFinal: Datos_up_down.arff
   generateModel: 1
-  modelFileName: modelo_merlin_mejorado_up_down_v2.model
+  modelFileName: Modelo_up_down.model
   limiteFuerzaZSuperior: 3000
   limiteAlturaInferior: -50
   limiteAlturaSuperior: 50

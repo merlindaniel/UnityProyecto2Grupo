@@ -1544,8 +1544,6 @@ MonoBehaviour:
   loadModel: 0
   modelFileName: 
   datasetFile: 
-  negativeDistanceOffset: 125
-  negativeHeightOffset: 1
 --- !u!114 &616575226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1559,7 +1557,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inNextPlatform: 0
-  time: 0
   isJumping: 0
   timeScaleGame: 0
   manualJump: 0
@@ -1879,7 +1876,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inNextPlatform: 0
-  time: 0
   isJumping: 0
   timeScaleGame: 5
   manualJump: 0
@@ -1896,10 +1892,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadModel: 1
-  modelFileName: modelo_merlin_mejorado_up_down_v2.model
-  datasetFile: modelo_merlin_mejorado_up_down_v2.arff
-  negativeDistanceOffset: 610
-  negativeHeightOffset: 0.35
+  modelFileName: Modelo_final_up_down.model
+  datasetFile: Experiencia_inicial.arff
 --- !u!1 &741677980
 GameObject:
   m_ObjectHideFlags: 0
