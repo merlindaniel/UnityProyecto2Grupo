@@ -22,7 +22,6 @@ public class SpawnPlatform : MonoBehaviour
     {
         if (other.gameObject.tag == "NPC")
         {
-            // other.gameObject.transform.LookAt(new Vector3(nextPlatformPrediction.transform.position.x, 0, nextPlatformPrediction.transform.position.z));
             PrincipalNPC principalNpc = other.gameObject.GetComponent<PrincipalNPC>();
             JumpingAI jumpingAI = other.gameObject.GetComponent<JumpingAI>();
             principalNpc.SetNextPlatform(nextPlatformPrediction);

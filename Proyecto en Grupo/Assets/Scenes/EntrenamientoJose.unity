@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &431373491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,18 +152,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfed329b11b9bb469c6f189ec8174df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 1
   nombreArchivoDeDatosInicial: Experiencia_inicial.arff
   nombreArchivoDeDatosFinal: datos_jose_2.arff
+  generateModel: 0
+  modelFileName: 
   limiteFuerzaZSuperior: 800
   limiteAlturaInferior: 100
   limiteAlturaSuperior: 200
-  NPC: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
-  instanciaNPC: {fileID: 0}
-  alturaActual: 0
-  posInicialZ: 0
-  distanciaCalculadaZ: 0
   slope: 10
+  NPCPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
 --- !u!4 &431373492
 Transform:
   m_ObjectHideFlags: 0
@@ -292,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2162444addc1a36419ace3090cf2bd2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeScaleGame: 100
+  timeScaleGame: 50
 --- !u!4 &678736002
 Transform:
   m_ObjectHideFlags: 0
@@ -337,18 +334,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfed329b11b9bb469c6f189ec8174df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realizarEntrenamiento: 1
-  nombreArchivoDeDatosInicial: Experiencia_inicial.arff
-  nombreArchivoDeDatosFinal: datos_jose_1.arff
-  limiteFuerzaZSuperior: 800
-  limiteAlturaInferior: 40
-  limiteAlturaSuperior: 100
-  NPC: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
-  instanciaNPC: {fileID: 0}
-  alturaActual: 0
-  posInicialZ: 0
-  distanciaCalculadaZ: 0
-  slope: 10
+  nombreArchivoDeDatosInicial: Experiencia_Inicial.arff
+  nombreArchivoDeDatosFinal: modelo_merlin_mejorado_up_down_v2.arff
+  generateModel: 1
+  modelFileName: modelo_merlin_mejorado_up_down_v2.model
+  limiteFuerzaZSuperior: 3000
+  limiteAlturaInferior: -50
+  limiteAlturaSuperior: 50
+  slope: 20
+  NPCPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
 --- !u!4 &1452812001
 Transform:
   m_ObjectHideFlags: 0

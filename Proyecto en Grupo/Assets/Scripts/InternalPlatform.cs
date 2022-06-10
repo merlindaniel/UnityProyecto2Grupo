@@ -31,11 +31,7 @@ public class InternalPlatform : MonoBehaviour
                 //print("---Plataforma interna pisada");
                 if (principalNpc.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
                 {
-                    print("hola");
                     principalNpc.SetNextPlatform(nextPlatform);
-                    //other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    //Lo posicionamos en el centro de la plataforma
-                    // principalNpc.GoToActualPlatform(); 
 
                     // Predecir y saltar
                     other.gameObject.GetComponent<Rigidbody>().isKinematic = true;

@@ -6,7 +6,8 @@ using UnityEngine;
 using weka.core;
 using weka.core.converters;
 //using weka.classifiers;
-using weka.classifiers.trees;
+//using weka.classifiers.trees;
+using weka.classifiers.lazy;
 using weka.classifiers.functions;
 using java.io;
 using System;
@@ -19,28 +20,25 @@ using System;
 
 public class JumpingAI : MonoBehaviour
 {
-    //IA
-    weka.classifiers.functions.MultilayerPerceptron AIModelFZ;
-    // weka.classifiers.trees.M5P AIModelFZ;
-
     [Header("Model Settings")]
     public bool loadModel = false;
-    public string modelFile;
+    public string modelFileName;
     
     public string datasetFile;
+
+
+    //IA
+    weka.core.Instances trainingDataset;
+    weka.classifiers.functions.MultilayerPerceptron AIModelFZ;
+    //weka.classifiers.lazy.IBk AIModelFZ;
 
     //UI
     string text;
 
     //Factores
-    //const float factorFuerzaX = 0.005f;
     const float incHeightFactor = 2f;
-    //const float valorMaximoX = 10000;
 
-    public float negativeDistanceOffset = 125f, negativeHeightOffset = 1f;
-
-    weka.core.Instances trainingDataset;
-
+    //Otros
     PrincipalNPC mainNPC;
     Rigidbody rb;
 
@@ -55,8 +53,8 @@ public class JumpingAI : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         Regex regex = new Regex(@"[a-zA-Z]+\w*\.model");
-        if (!regex.IsMatch(modelFile))
-            modelFile = "Modelo_Multilayer_Perceptron.model";
+        if (!regex.IsMatch(modelFileName))
+            modelFileName = "Modelo_Multilayer_Perceptron.model";
 
         //Cargamos el dataset
         LoadAndBuildModel();
@@ -73,20 +71,20 @@ public class JumpingAI : MonoBehaviour
             //APRENDIZAJE A PARTIR DE LOS CASOS DE ENTRENAMIENTO
             print("----EMPIEZA GENERACION DEL MODELO");
             AIModelFZ = new MultilayerPerceptron();
-            // AIModelFZ = new M5P();                                               //Algoritmo Arbol de Regresion M5P
-            AIModelFZ.setHiddenLayers("7,5,3");
-            AIModelFZ.setTrainingTime(1000);
-            AIModelFZ.setLearningRate(0.2);
-            //AIModelFZ.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 5500 -V 0 -S 0 -E 20 -H 5,5,5 -R"));
-                                                         
+            AIModelFZ.setHiddenLayers("7,4");//7,5,3
+            AIModelFZ.setTrainingTime(2000);
+            //AIModelFZ = new IBk();
+            //AIModelFZ.setKNN(3);
+
             AIModelFZ.buildClassifier(trainingDataset);                        //CREAR MODELO
-            SerializationHelper.write("Assets/WekaData/" + modelFile, AIModelFZ);
+            SerializationHelper.write("Assets/WekaData/" + modelFileName, AIModelFZ);
             print("----TERMINA GENERACION DEL MODELO");
         }
         else
         {
             print("----LECTURA DEL MODELO");
-            AIModelFZ = (MultilayerPerceptron) SerializationHelper.read("Assets/WekaData/" + modelFile);
+            AIModelFZ = (MultilayerPerceptron)SerializationHelper.read("Assets/WekaData/" + modelFileName);
+            //AIModelFZ = (IBk)SerializationHelper.read("Assets/WekaData/" + modelFileName);
             print("----TERMINA LECTURA DEL MODELO");
         }
         
@@ -95,12 +93,10 @@ public class JumpingAI : MonoBehaviour
     ///     Obtiene la Fuerza a aplicar en el eje Y aplicando la formula de lanzamiento verticial y la segunda ley de Newton
     float CalculateFY(float mass, float targetHeight)
     {
-        return mass * Mathf.Sqrt(Math.Abs(targetHeight * 2.0f * 9.81f * incHeightFactor)); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
-
-        // if (targetHeight > 0)
-        //     return mass * Mathf.Sqrt(targetHeight * 2.0f * 9.81f * incHeightFactor); //Mathf.Sqrt(masa * Mathf.Sqrt(alturaObjetivo * 2 * 9.81f)); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo* factorIncFuerzaYPorDistancia);
-        // else
-        //     return mass * 9.81f; //+ ((masa * 9.81f) / 2.0f); //factorIncFuerzaYPorDistancia; //(distanciaObjetivo * factorIncFuerzaYPorDistancia);
+        if (targetHeight >= 2)
+            return mass * Mathf.Sqrt(targetHeight * 2.0f * 9.81f * incHeightFactor);
+        else
+            return mass * Mathf.Sqrt(2f * 2.0f * 9.81f * incHeightFactor);
     }
 
     // Update is called once per frame
@@ -116,7 +112,6 @@ public class JumpingAI : MonoBehaviour
         instance.setValue(1, fY);
         instance.setValue(2, height);
         instance.setValue(3, distance);
-        //instance.setValue(4, 1);
         float fZ = (float)AIModelFZ.classifyInstance(instance);                          //Predice FuerzaZ
 
         return fZ;
@@ -126,15 +121,9 @@ public class JumpingAI : MonoBehaviour
     {
         mainNPC.LookNextPlatform();
         Vector3 pnp = mainNPC.GetNextPlatform().transform.position;
-        //float height = pnp.y;
-        float height = (pnp.y - (transform.position.y - (mainNPC.GetNpcHeight() / 2))) * 1.5f;
-        float distance = 0.925f * Mathf.Sqrt (Mathf.Pow (Mathf.Abs (pnp.x - transform.position.x), 2f) + Mathf.Pow (Mathf.Abs (pnp.z - transform.position.z), 2f));
-        if (height < 0) 
-        {
-            height *= negativeHeightOffset;
-            distance *= 1 + (Math.Abs(height)/negativeDistanceOffset);
-        }
-        // if (height < 0) distance *= 1 + (Math.Abs(height)/407.5f);
+        float platformHeight = mainNPC.GetNextPlatform().GetComponent<Collider>().bounds.size.y; //Tenemos en cuenta la altuar de la plataforma
+        float height = (pnp.y + (platformHeight/2f)) - (transform.position.y - (mainNPC.GetNpcHeight() / 2f));
+        float distance = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(pnp.x - transform.position.x), 2f) + Mathf.Pow(Mathf.Abs(pnp.z - transform.position.z), 2f));
         float fY = CalculateFY(rb.mass, height);
         float fZ = PredictFZ(fY, height, distance);
         print("Fuerza en Z: " + fZ + ". Fuerza en Y: " + fY + ". Distancia: " + distance + ". Altura: " + height);

@@ -13,12 +13,10 @@ public class PrincipalNPC : MonoBehaviour
 
     bool finished; //Si el NPC llego a la meta
     float npcHeight; //Altura del NPC
-    public bool inNextPlatform;
-    public float time;
-    
-    public bool isJumping; //Si el NPC se encuentra en el aire
-    //bool internalPlatformPressed;    //Indica si la plataforma interna fue pisada alguna vez. Nos ayudara a conocer si el NPC pis� o no la plataforma. Nota: Hay que resetar esto cada vez que saltemos
+    [HideInInspector] public bool inNextPlatform;
+    [HideInInspector] public bool isJumping; //Si el NPC se encuentra en el aire
 
+    float time;
     public float timeScaleGame;
 
     public bool manualJump = false;
@@ -35,7 +33,6 @@ public class PrincipalNPC : MonoBehaviour
 
         actualPlatform = respawn;
         nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
-        //nextPlatform = respawn.GetComponent<Platform>().nextPlatform;
         float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
         transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
 
@@ -50,7 +47,6 @@ public class PrincipalNPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Time.timeScale = timeScaleGame;
         time = 0;
         rb = GetComponent<Rigidbody>();
     }
@@ -169,19 +165,5 @@ public class PrincipalNPC : MonoBehaviour
         return npcHeight;
     }
 
-    //public bool InternalPlatformPressed()
-    //{
-    //    return internalPlatformPressed;
-    //}
-
-    //public void ResetInternalPlatformPressed()
-    //{
-    //    internalPlatformPressed = false;
-    //}
-
-    //public void SetInternalPlatformPressed()
-    //{
-    //    internalPlatformPressed = true;
-    //}
 
 }
