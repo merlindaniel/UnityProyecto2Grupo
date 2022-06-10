@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PrincipalNPC : MonoBehaviour
 {
-    GameObject respawn;
+    GameObject respawnGameObject;
 
     GameObject nextPlatform;
     GameObject actualPlatform;
@@ -19,7 +19,8 @@ public class PrincipalNPC : MonoBehaviour
     float time;
     public float timeScaleGame;
 
-    public bool manualJump = false;
+    // Saltar manualmente / Respawnear al NPC
+    public bool manualJump = false, respawn = false;
 
     private void Awake()
     {
@@ -29,12 +30,12 @@ public class PrincipalNPC : MonoBehaviour
         inNextPlatform = false;
         npcHeight = GetComponent<Collider>().bounds.size.y;
 
-        respawn = GameObject.FindGameObjectWithTag("Respawn");
+        respawnGameObject = GameObject.FindGameObjectWithTag("Respawn");
 
-        actualPlatform = respawn;
-        nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
-        float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
-        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
+        actualPlatform = respawnGameObject;
+        nextPlatform = respawnGameObject.GetComponent<SpawnPlatform>().nextPlatformPrediction;
+        float actSpawnHeight = respawnGameObject.GetComponent<Collider>().bounds.size.y;
+        transform.position = new Vector3(respawnGameObject.transform.position.x, respawnGameObject.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawnGameObject.transform.position.z);
 
         if (nextPlatform != null)
         {
@@ -85,6 +86,12 @@ public class PrincipalNPC : MonoBehaviour
             GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
             manualJump = false;
         }
+
+        if (respawn)
+        {
+            GoToSpawn();
+            respawn = false;
+        }
     }
 
     public void LookNextPlatform()
@@ -99,13 +106,13 @@ public class PrincipalNPC : MonoBehaviour
     public void GoToSpawn()
     {
         isJumping = true; //Spawnea en al aire. Tomaremos esto como un salto
-        actualPlatform = respawn;
+        actualPlatform = respawnGameObject;
 
-        nextPlatform = respawn.GetComponent<SpawnPlatform>().nextPlatformPrediction;
+        nextPlatform = respawnGameObject.GetComponent<SpawnPlatform>().nextPlatformPrediction;
 
 
-        float actSpawnHeight = respawn.GetComponent<Collider>().bounds.size.y;
-        transform.position = new Vector3(respawn.transform.position.x, respawn.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawn.transform.position.z);
+        float actSpawnHeight = respawnGameObject.GetComponent<Collider>().bounds.size.y;
+        transform.position = new Vector3(respawnGameObject.transform.position.x, respawnGameObject.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawnGameObject.transform.position.z);
         LookNextPlatform();
         GetComponent<JumpingAI>().PredictAndJumpToNextPlatform();
     }
