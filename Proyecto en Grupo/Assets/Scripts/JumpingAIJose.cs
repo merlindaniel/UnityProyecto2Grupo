@@ -55,7 +55,7 @@ public class JumpingAIJose : MonoBehaviour
 
         Regex regexModel = new Regex(@"[a-zA-Z]+\w*\.model");
         if (!regexModel.IsMatch(modelFileName))
-            modelFileName = "Modelo.model";
+            modelFileName = "Modelo_Multilayer_Perceptron.model";
 
         GameObject iNPC = Instantiate(NPCPrefab);
         npcHeight = iNPC.GetComponent<Collider>().bounds.size.y;
