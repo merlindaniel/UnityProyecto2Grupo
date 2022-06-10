@@ -61,8 +61,6 @@ public class JumpingAIJose : MonoBehaviour
         npcHeight = iNPC.GetComponent<Collider>().bounds.size.y;
         Destroy(iNPC);
 
-        print("Altura NPC: " + npcHeight);
-
         StartCoroutine("Entrenamiento");
     }
 
