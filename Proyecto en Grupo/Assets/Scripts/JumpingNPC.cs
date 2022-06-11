@@ -45,8 +45,6 @@ public class JumpingNPC : MonoBehaviour
     {
         if (transform.position.y < -100)
         {
-            rbNPC.isKinematic = true;
-            rbNPC.isKinematic = false;
             GoToSpawn();
         }
 
@@ -94,6 +92,7 @@ public class JumpingNPC : MonoBehaviour
     public void GoToSpawn()
     {
         currentPlatform = respawnPlatform;
+        nextPlatform = respawnPlatform;
 
         float actSpawnHeight = respawnPlatform.GetComponent<Collider>().bounds.size.y;
         transform.position = new Vector3(respawnPlatform.transform.position.x, respawnPlatform.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f) + 1, respawnPlatform.transform.position.z);

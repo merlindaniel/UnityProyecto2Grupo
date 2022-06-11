@@ -27,6 +27,7 @@ public class Dragon : MonoBehaviour
     private bool addedForceY = false;
     private bool addedForceForward = false;
     private bool addedForceBack = false;
+    public int maxFireballsAtOnce = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +71,7 @@ public class Dragon : MonoBehaviour
             if (attackTimer > attackFrequencySeconds)
             {
                 attackTimer = 0f;
-                FireBallAttack();
+                FireballAttack();
             }
         }
         else
@@ -89,7 +90,7 @@ public class Dragon : MonoBehaviour
     {
         float distanceY = Mathf.Abs(transform.position.y - target.position.y);
         
-        if (transform.position.y > target.position.y && (distanceY > 50 || Mathf.Abs(rb.velocity.y) > 50))
+        if (transform.position.y > target.position.y && (distanceY > 35 || Mathf.Abs(rb.velocity.y) > 50))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
@@ -124,9 +125,17 @@ public class Dragon : MonoBehaviour
         }
     }
 
-    void FireBallAttack()
+    void FireballAttack()
     {
-        Vector3 fireballSpawnPosition = transform.position + transform.forward * 1.5f + transform.up * (GetComponent<Renderer>().bounds.size.y * 0.6f);
+        for (int i = 0; i < Random.Range(1, maxFireballsAtOnce); i++)
+        {
+            SpawnFireball();
+        }
+    }
+
+    void SpawnFireball()
+    {
+        Vector3 fireballSpawnPosition = transform.position + transform.forward * 1.5f + (transform.up * (GetComponent<Renderer>().bounds.size.y * 0.6f) * Random.Range(1, 1.5f) + transform.right * Random.Range(-5, 5f));
         GameObject instanceFireball = Instantiate(fireball, fireballSpawnPosition, transform.rotation);
         FireballAI fireballAI = instanceFireball.GetComponent<FireballAI>();
         fireballAI.SetTarget(target);

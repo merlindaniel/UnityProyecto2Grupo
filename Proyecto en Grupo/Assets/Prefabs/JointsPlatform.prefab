@@ -186,7 +186,7 @@ HingeJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 1
+  m_MassScale: 70
   m_ConnectedMassScale: 1
 --- !u!1 &2398099263697103695
 GameObject:
@@ -338,7 +338,7 @@ HingeJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 1
+  m_MassScale: 70
   m_ConnectedMassScale: 1
 --- !u!1 &2398099263742514599
 GameObject:
@@ -630,7 +630,7 @@ HingeJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 1
+  m_MassScale: 70
   m_ConnectedMassScale: 1
 --- !u!1 &2398099263807242038
 GameObject:
@@ -1829,7 +1829,7 @@ HingeJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
-  m_MassScale: 1
+  m_MassScale: 70
   m_ConnectedMassScale: 1
 --- !u!1 &2398099264483441480
 GameObject:

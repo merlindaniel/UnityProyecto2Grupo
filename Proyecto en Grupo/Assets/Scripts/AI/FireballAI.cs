@@ -52,7 +52,7 @@ public class FireballAI : PredictionAI
 
     public void Update()
     {
-        if (setToLaunch)
+        if (setToLaunch && target != null)
         {
             timer += Time.deltaTime;
 
@@ -67,7 +67,7 @@ public class FireballAI : PredictionAI
             }
         }
 
-        if (Mathf.Abs(Vector3.Distance(transform.position, target.position)) > 2000f)
+        if ((target != null && Mathf.Abs(Vector3.Distance(transform.position, target.position)) > 2000f) || transform.position.y < -500f)
         {
             Destroy(gameObject);
         }
