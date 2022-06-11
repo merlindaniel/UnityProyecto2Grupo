@@ -96,7 +96,7 @@ public class JumpingNPC : MonoBehaviour
         currentPlatform = respawnPlatform;
 
         float actSpawnHeight = respawnPlatform.GetComponent<Collider>().bounds.size.y;
-        transform.position = new Vector3(respawnPlatform.transform.position.x, respawnPlatform.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawnPlatform.transform.position.z);
+        transform.position = new Vector3(respawnPlatform.transform.position.x, respawnPlatform.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f) + 1, respawnPlatform.transform.position.z);
     }
 
     public void GoToCurrentPlatform()

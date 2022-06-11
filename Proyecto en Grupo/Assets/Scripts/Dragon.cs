@@ -43,26 +43,29 @@ public class Dragon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (allowRotation)        
-        {
-            if (rb.isKinematic)
-                rb.isKinematic = false;
-            Rotation();
-        }
+        if (target == null)
+            SelectTarget();
 
-        if (allowMovement)
-        {
-            if (rb.isKinematic)
-                rb.isKinematic = false;
-
-            Movement();
-        }
-        
         if (!rb.isKinematic && !allowRotation && !allowMovement)
             rb.isKinematic = true;
-        
+
         if (target != null)
         {
+            if (allowRotation)        
+            {
+                if (rb.isKinematic)
+                    rb.isKinematic = false;
+                Rotation();
+            }
+
+            if (allowMovement)
+            {
+                if (rb.isKinematic)
+                    rb.isKinematic = false;
+
+                Movement();
+            }
+
             attackTimer += Time.deltaTime;
             if (attackTimer > attackFrequencySeconds)
             {
@@ -70,29 +73,27 @@ public class Dragon : MonoBehaviour
                 FireBallAttack();
             }
         }
+        else
+        {
+            allowMovement = false;
+            allowRotation = false;
+        }
     }
 
     private void Rotation()
     {
-        if (target != null)
-            transform.LookAt(target);
-        else
-            SelectTarget();
+        transform.LookAt(target);
     }
 
     private void Movement()
     {
-        if (target == null)
-            SelectTarget();
-
-        if (target == null) return; // No hay npcs
-
         float distanceY = Mathf.Abs(transform.position.y - target.position.y);
         
-        if (Mathf.Abs(rb.velocity.y) > 50 || (transform.position.y > target.position.y && distanceY > 100))
+        if (transform.position.y > target.position.y && (distanceY > 50 || Mathf.Abs(rb.velocity.y) > 50))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
+
         if (transform.position.y < target.position.y - 20)
         {
             rb.AddForce(Vector3.up * impulseY * (1 + (distanceY / 100)), ForceMode.Impulse);
