@@ -24,6 +24,9 @@ public class Dragon : MonoBehaviour
     public bool allowRotation = true;
 
     private Rigidbody rb;
+    private bool addedForceY = false;
+    private bool addedForceForward = false;
+    private bool addedForceBack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -85,30 +88,38 @@ public class Dragon : MonoBehaviour
         if (target == null) return; // No hay npcs
 
         float distanceY = Mathf.Abs(transform.position.y - target.position.y);
-        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y >= 0 ? Mathf.Min(rb.velocity.y, 10) : Mathf.Max(rb.velocity.y, -10), rb.velocity.z);
-        if (transform.position.y < target.position.y + 20)
+        
+        if (Mathf.Abs(rb.velocity.y) > 50 || (transform.position.y > target.position.y && distanceY > 100))
         {
-            rb.AddForce(Vector3.up * impulseY, ForceMode.Impulse);
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
-        // else
-        // {
-        //     rb.AddForce(Vector3.down * impulseY * (1 + distanceY / 100), ForceMode.Impulse);
-        // }
+        if (transform.position.y < target.position.y - 20)
+        {
+            rb.AddForce(Vector3.up * impulseY * (1 + (distanceY / 100)), ForceMode.Impulse);
+        }
 
         Vector3 targetPositionXZ = new Vector3(target.position.x, 0f, target.position.z);
         float distanceXZ = Mathf.Abs(Vector3.Distance(targetPositionXZ, new Vector3(transform.position.x, 0, transform.position.z)));
-        if (Mathf.Abs(rb.velocity.z) > 50)
+        if (Mathf.Abs(rb.velocity.z) > 80)
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
+        }
+
+        if (Mathf.Abs(rb.velocity.x) > 10)
+        {
+            rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
         }
         
         if (distanceXZ > maxDistance - 20)
         {
             rb.AddRelativeForce(Vector3.forward * impulseZ * (1 + (distanceXZ / 100)), ForceMode.Impulse);
+            // rb.AddRelativeForce(Vector3.left * impulseZ / 2 * (1 + (distanceXZ / 100)), ForceMode.Impulse);
         }
-        else
+        
+        if (distanceXZ < maxDistance - 20)
         {
             rb.AddRelativeForce(Vector3.back * impulseZ * (1 + (distanceXZ / 100)), ForceMode.Impulse);
+            // rb.AddRelativeForce(Vector3.right * impulseZ / 2 * (1 + (distanceXZ / 100)), ForceMode.Impulse);
         }
     }
 

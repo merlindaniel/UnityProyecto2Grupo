@@ -983,11 +983,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8705837839833744759, guid: 8e305fa5ba90ff749a2dd2d3be4ffb27, type: 3}
       propertyPath: impulseY
-      value: 4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8705837839833744759, guid: 8e305fa5ba90ff749a2dd2d3be4ffb27, type: 3}
       propertyPath: impulseZ
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8705837839833744759, guid: 8e305fa5ba90ff749a2dd2d3be4ffb27, type: 3}
       propertyPath: allowMovement
