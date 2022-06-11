@@ -126,7 +126,7 @@ public class Dragon : MonoBehaviour
 
     void FireBallAttack()
     {
-        Vector3 fireballSpawnPosition = transform.position + transform.forward * 1.5f + transform.up * 1.5f;
+        Vector3 fireballSpawnPosition = transform.position + transform.forward * 1.5f + transform.up * (GetComponent<Renderer>().bounds.size.y * 0.6f);
         GameObject instanceFireball = Instantiate(fireball, fireballSpawnPosition, transform.rotation);
         FireballAI fireballAI = instanceFireball.GetComponent<FireballAI>();
         fireballAI.SetTarget(target);

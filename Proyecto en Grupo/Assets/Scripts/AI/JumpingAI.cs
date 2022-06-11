@@ -1,14 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using UnityEngine;
 using weka.core;
-using weka.core.converters;
-using weka.classifiers.lazy;
-using weka.classifiers.functions;
-using java.io;
-using System;
 
 public class JumpingAI : PredictionAI
 {

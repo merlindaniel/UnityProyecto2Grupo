@@ -38,5 +38,9 @@ public class Platform : MonoBehaviour
                 }
             }
         }
+        else if (other.gameObject.tag == "Projectile")
+        {
+            // Destroy(other.gameObject);
+        }
     }
 }
