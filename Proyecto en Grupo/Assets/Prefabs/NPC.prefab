@@ -146,4 +146,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadModel: 1
   modelFileName: Modelo_final_up_down.model
-  datasetFile: Experiencia_inicial.arff
+  initialExperienceFilename: Experiencia_Inicial.arff
