@@ -12,7 +12,7 @@ using java.io;
 public class TrainingAI : MonoBehaviour
 {
     [Header("Basic settings")]
-    private string inputFilename;
+    private string inputFilename = "Experiencia_Inicial.arff";
     public string outputFilename = "output.arff";    //Se guardara los datos en este archivo si se desea realizar un entrenamiento (bool realizarEntrenamiento)
     public bool generateModel = true;
     public string modelFilename = "Modelo_Multilayer_Perceptron.model";
