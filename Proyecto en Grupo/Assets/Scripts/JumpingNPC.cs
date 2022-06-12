@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class JumpingNPC : MonoBehaviour
 {
@@ -22,11 +23,11 @@ public class JumpingNPC : MonoBehaviour
 
     bool beingChased;
 
-    private List<float> errors;
+    private Dictionary<int, float> errors;
 
     private void Awake()
     {
-        errors = new List<float>();
+        errors = new Dictionary<int, float>();
         isOnAPlatform = false;
         finished = false;
         isSetToJump = false;
@@ -119,7 +120,22 @@ public class JumpingNPC : MonoBehaviour
         if (other.gameObject.GetComponent<Platform>() != null)
         {
             isOnAPlatform = true;
+
+            // Si no es el respawn, apuntar el error de salto
+            if (other.gameObject.tag != "Respawn" && !errors.ContainsKey(other.gameObject.GetInstanceID())) 
+            {
+                float error = CalculateError(other);
+                errors.Add(other.gameObject.GetInstanceID(), error);
+            }
         }
+    }
+
+    private float CalculateError(Collision plataformCollider)
+    {
+        Vector3 platformPosition = plataformCollider.transform.position;
+        float distance = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(platformPosition.x - transform.position.x), 2f) + Mathf.Pow(Mathf.Abs(platformPosition.z - transform.position.z), 2f));
+
+        return distance;
     }
 
     private void OnCollisionExit(Collision other) {
@@ -166,8 +182,30 @@ public class JumpingNPC : MonoBehaviour
     {
         this.finished = finish;
         rbNPC.isKinematic = finish;
+        
+        if (finished)
+        {
+            float meanError = CalculateMeanError();
+            print("NPC:  " + gameObject.GetInstanceID() + " FINISHED. MEAN ERROR: " + meanError);
+            GameObject textGameObject = new GameObject("Text");
+            TextMesh t = textGameObject.AddComponent<TextMesh>();
+            t.text = meanError.ToString();
+            t.fontSize = 30;
+            t.characterSize = 0.2f;
+            t.transform.position = transform.position + (Vector3.up * GetNpcHeight()) + (Vector3.left * 1.25f);
+            t.transform.parent = transform;
+            t.color = Color.black;
+        }
     }
-    
+
+    private float CalculateMeanError()
+    {
+        if (errors.Count > 0)
+            return errors.Sum(e => e.Value) / errors.Count;
+
+        return 0;
+    }
+
     public void SetNextPlatform(GameObject nextPlatform)
     {
         this.nextPlatform = nextPlatform;

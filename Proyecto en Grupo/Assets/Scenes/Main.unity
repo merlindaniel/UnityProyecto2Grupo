@@ -1330,6 +1330,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
+      propertyPath: numNPCs
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
+      propertyPath: numDragons
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
       propertyPath: lineColor.a
       value: 0.20392157
       objectReference: {fileID: 0}
@@ -1347,7 +1355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
       propertyPath: timeScaleGame
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
       propertyPath: drawLinesBetweenPlatforms

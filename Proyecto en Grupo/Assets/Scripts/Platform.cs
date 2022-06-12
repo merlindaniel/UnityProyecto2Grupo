@@ -32,7 +32,7 @@ public class Platform : MonoBehaviour
 
             if (finalPlatform)
             {
-                other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                other.gameObject.GetComponent<JumpingNPC>().SetFinished(true);
             }
             else if (nextPlatform != null)
             {

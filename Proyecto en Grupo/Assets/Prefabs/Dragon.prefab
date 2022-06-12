@@ -950,16 +950,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireball: {fileID: 5267337614517615503, guid: 4de1acaa8c8e5e34b96566618386f652, type: 3}
   target: {fileID: 0}
-  maxDistance: 50
+  maxDistance: 10
   maxVelocityY: 20
   maxVelocityX: 80
   maxVelocityZ: 80
-  impulseZ: 10
-  impulseY: 15
+  impulseZ: 60
+  impulseY: 750
   allowMovement: 1
   allowRotation: 1
-  maxFireballsAtOnce: 5
-  attackFrequencySeconds: 1.5
+  maxFireballsAtOnce: 3
+  attackFrequencySeconds: 2
 --- !u!54 &1369860997755778146
 Rigidbody:
   m_ObjectHideFlags: 0
