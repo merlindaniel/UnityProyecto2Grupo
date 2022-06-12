@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class TrainNPCButton : MonoBehaviour
+public class OnClickTrainNPC : MonoBehaviour
 {
     // Start is called before the first frame update
 
@@ -15,11 +15,6 @@ public class TrainNPCButton : MonoBehaviour
         {
             Loader.Load(Loader.Scene.EntrenamientoJose);
         });
-    }
-
-    void TaskLoadTrainNPC()
-    {
-        Loader.Load(Loader.Scene.EntrenamientoJose);
     }
 
     // Update is called once per frame
