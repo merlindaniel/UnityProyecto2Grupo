@@ -10,8 +10,10 @@ public class FireballAI : PredictionAI
     const float incHeightFactor = 2f;
 
     private bool setToLaunch = false;
+    private float launchTimer = 0f;
 
-    private float timer = 0f;
+    public float destroyTime = 8f;
+    private float destroyTimer = 0f;
 
     protected override void Start()
     {
@@ -54,20 +56,21 @@ public class FireballAI : PredictionAI
     {
         if (setToLaunch && target != null)
         {
-            timer += Time.deltaTime;
+            launchTimer += Time.deltaTime;
 
             transform.localRotation = Quaternion.Euler(target.position.x, target.position.y, target.position.z);
             transform.LookAt(target);
 
-            if (timer > 0.1f)
+            if (launchTimer > 0.1f)
             {
                 PredictAndExecute();
                 setToLaunch = false;
-                timer = 0;
+                launchTimer = 0;
             }
         }
 
-        if ((target != null && Mathf.Abs(Vector3.Distance(transform.position, target.position)) > 2000f) || transform.position.y < -500f)
+        destroyTimer += Time.deltaTime;
+        if (destroyTimer >= destroyTime || transform.position.y < -200f)
         {
             Destroy(gameObject);
         }

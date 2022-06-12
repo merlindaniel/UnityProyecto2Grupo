@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class JumpingNPC : MonoBehaviour
 {
-    GameObject respawnPlatform;
-    GameObject nextPlatform;
-    GameObject currentPlatform;
-
     Rigidbody rbNPC;
+    GameObject respawnPlatform, currentPlatform, nextPlatform;
 
     bool finished; //Si el NPC llego a la meta
-    float npcHeight; //Altura del NPC
-    [HideInInspector] public bool isSetToJump;
-
     float time;
+    bool isSetToJump;
+    
+    float timeUntilJump;
+    public float timeUntilJumpRangeMin = 0.5f;
+    public float timeUntilJumpRangeMax = 5f;
 
     // Saltar manualmente / Respawnear al NPC
     public bool manualJump = false, respawn = false;
 
+    bool isOnAPlatform;
+
+    private List<float> errors;
+
     private void Awake()
     {
+        errors = new List<float>();
+        isOnAPlatform = false;
         finished = false;
         isSetToJump = false;
-        npcHeight = GetComponent<Collider>().bounds.size.y;
+        ResetTimeUntilJump();
 
         respawnPlatform = GameObject.FindGameObjectWithTag("Respawn");
-        currentPlatform = respawnPlatform;
-        nextPlatform = respawnPlatform;
-        
-        float actSpawnHeight = respawnPlatform.GetComponent<Collider>().bounds.size.y;
-        transform.position = new Vector3(respawnPlatform.transform.position.x, respawnPlatform.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f), respawnPlatform.transform.position.z);
+        GoToSpawn();
     }
 
     // Start is called before the first frame update
@@ -38,6 +39,7 @@ public class JumpingNPC : MonoBehaviour
     {
         time = 0;
         rbNPC = GetComponent<Rigidbody>();
+        GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, Random.value);
     }
 
     // Update is called once per frame
@@ -57,14 +59,16 @@ public class JumpingNPC : MonoBehaviour
                 rbNPC.isKinematic = false;
                 LookNextPlatform();
             }
-            if (time >= 0.3) // Predecir y saltar
+            if (time >= timeUntilJump && isOnAPlatform) // Solo saltar si esta sobre la plataforma
             {
-                isSetToJump = false;
+                SetToJump(false);
                 time = 0;
+                ResetTimeUntilJump();
                 GetComponent<JumpingAI>().PredictAndExecute();
             }
         }
 
+        // ---- Manual Inputs ----
         if (manualJump)
         {
             LookNextPlatform();
@@ -80,6 +84,17 @@ public class JumpingNPC : MonoBehaviour
         }
     }
 
+    // ---------------- Jump / Teleport NPC  ----------------
+
+    public void GoToSpawn()
+    {
+        SetToJump(false);
+        float actSpawnHeight = respawnPlatform.GetComponent<Collider>().bounds.size.y;
+        float actSpawnSizeX = respawnPlatform.GetComponent<Collider>().bounds.size.x;
+        float actSpawnSizeZ = respawnPlatform.GetComponent<Collider>().bounds.size.z;
+        transform.position = new Vector3(respawnPlatform.transform.position.x + Random.Range(-actSpawnSizeX/2, actSpawnSizeX/2), respawnPlatform.transform.position.y + (actSpawnHeight / 2f) + (GetNpcHeight() / 2f) + 1, respawnPlatform.transform.position.z + Random.Range(-actSpawnSizeZ/2, actSpawnSizeZ/2));
+    }
+
     public void LookNextPlatform()
     {
         if (nextPlatform != null)
@@ -89,36 +104,32 @@ public class JumpingNPC : MonoBehaviour
         }
     }
 
-    public void GoToSpawn()
-    {
-        currentPlatform = respawnPlatform;
-        nextPlatform = respawnPlatform;
-
-        float actSpawnHeight = respawnPlatform.GetComponent<Collider>().bounds.size.y;
-        transform.position = new Vector3(respawnPlatform.transform.position.x, respawnPlatform.transform.position.y + (actSpawnHeight / 2f) + (npcHeight / 2f) + 1, respawnPlatform.transform.position.z);
-    }
-
-    public void GoToCurrentPlatform()
-    {
-        float actPlatformHeight = currentPlatform.GetComponent<Collider>().bounds.size.y;
-        transform.position = new Vector3(currentPlatform.transform.position.x, currentPlatform.transform.position.y + (actPlatformHeight/2f) + (npcHeight/2f) + 1, currentPlatform.transform.position.z);
-    }
-
-    public void SetNextPlatform(GameObject nextPlatform)
-    {
-        this.currentPlatform = this.nextPlatform;
-        this.nextPlatform = nextPlatform;
-    }
-
     public void jumpRelative(float forceX, float forceY, float forceZ)
     {
         rbNPC.AddRelativeForce(new Vector3(forceX, forceY, forceZ), ForceMode.Impulse);
     }
 
-    public void SetFinished(bool finish)
+    // ---------------- Collisions ----------------
+
+    private void OnCollisionEnter(Collision other) {
+        if (other.gameObject.GetComponent<Platform>() != null)
+        {
+            isOnAPlatform = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision other) {
+        if (other.gameObject.GetComponent<Platform>() != null)
+        {
+            isOnAPlatform = false;
+        }
+    }
+
+    // ---------------- Getters / Setters ----------------
+
+    public bool IsSetToJump()
     {
-        this.finished = finish;
-        rbNPC.isKinematic = finish;
+        return isSetToJump;
     }
 
     public bool IsFinished()
@@ -131,13 +142,30 @@ public class JumpingNPC : MonoBehaviour
         return nextPlatform;
     }
 
-    public GameObject GetActualPlatform()
-    {
-        return currentPlatform;
-    }
-
     public float GetNpcHeight()
     {
-        return npcHeight;
+        return GetComponent<Collider>().bounds.size.y;
+    }
+
+    public void SetToJump(bool value)
+    {
+        isSetToJump = value;
+        time = 0f;
+    }
+
+    public void SetFinished(bool finish)
+    {
+        this.finished = finish;
+        rbNPC.isKinematic = finish;
+    }
+    
+    public void SetNextPlatform(GameObject nextPlatform)
+    {
+        this.nextPlatform = nextPlatform;
+    }
+
+    private void ResetTimeUntilJump()
+    {
+        timeUntilJump = Random.Range(timeUntilJumpRangeMin, timeUntilJumpRangeMax);
     }
 }

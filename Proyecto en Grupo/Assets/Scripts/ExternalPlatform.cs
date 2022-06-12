@@ -25,8 +25,7 @@ public class ExternalPlatform : MonoBehaviour
             JumpingNPC principalNpc = other.gameObject.GetComponent<JumpingNPC>();
             principalNpc.SetFinished(true);
             principalNpc.SetFinished(false);
-            principalNpc.GoToCurrentPlatform();
-            
+            principalNpc.GoToSpawn();
         }
     }
 }
