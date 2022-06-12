@@ -20,6 +20,8 @@ public class JumpingNPC : MonoBehaviour
 
     bool isOnAPlatform;
 
+    bool beingChased;
+
     private List<float> errors;
 
     private void Awake()
@@ -28,6 +30,7 @@ public class JumpingNPC : MonoBehaviour
         isOnAPlatform = false;
         finished = false;
         isSetToJump = false;
+        beingChased = false;
         ResetTimeUntilJump();
 
         respawnPlatform = GameObject.FindGameObjectWithTag("Respawn");
@@ -89,6 +92,7 @@ public class JumpingNPC : MonoBehaviour
     public void GoToSpawn()
     {
         SetToJump(false);
+        SetBeingChased(false);
         float actSpawnHeight = respawnPlatform.GetComponent<Collider>().bounds.size.y;
         float actSpawnSizeX = respawnPlatform.GetComponent<Collider>().bounds.size.x;
         float actSpawnSizeZ = respawnPlatform.GetComponent<Collider>().bounds.size.z;
@@ -147,6 +151,11 @@ public class JumpingNPC : MonoBehaviour
         return GetComponent<Collider>().bounds.size.y;
     }
 
+    public bool isBeingChased()
+    {
+        return beingChased;
+    }
+
     public void SetToJump(bool value)
     {
         isSetToJump = value;
@@ -167,5 +176,10 @@ public class JumpingNPC : MonoBehaviour
     private void ResetTimeUntilJump()
     {
         timeUntilJump = Random.Range(timeUntilJumpRangeMin, timeUntilJumpRangeMax);
+    }
+
+    public void SetBeingChased(bool value)
+    {
+        beingChased = value;
     }
 }

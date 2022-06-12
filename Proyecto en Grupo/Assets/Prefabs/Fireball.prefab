@@ -130,3 +130,4 @@ MonoBehaviour:
   loadModel: 1
   modelFileName: Modelo_final_up_down.model
   initialExperienceFilename: Experiencia_Inicial.arff
+  destroyTime: 8

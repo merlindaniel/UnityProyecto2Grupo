@@ -41,6 +41,9 @@ public class Dragon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!target.GetComponent<JumpingNPC>().isBeingChased())
+            target = null;
+
         // Si no hay target o este ya ha terminado el circuito, seleccionar otro target
         if (target == null || target.GetComponent<JumpingNPC>().IsFinished())
             SelectTarget();
@@ -87,30 +90,24 @@ public class Dragon : MonoBehaviour
         float distanceXZ = Mathf.Abs(Vector3.Distance(targetPositionXZ, new Vector3(transform.position.x, 0, transform.position.z)));
         float distanceY = Mathf.Abs(transform.position.y - target.position.y);
 
-        // Acotar velocidad maxima en X, Y, Z
-        rb.velocity = new Vector3(
-            Mathf.Abs(rb.velocity.x) > maxVelocityX ? 0 : rb.velocity.x,
-            
-            transform.position.y > target.position.y && 
-                (Mathf.Abs(rb.velocity.y) > maxVelocityY || distanceY > maxDistance * 0.4f) ? 0 : rb.velocity.y, 
-            
-            Mathf.Abs(rb.velocity.z) > maxVelocityZ ? 0 : rb.velocity.z
-        );
-
         // Impulsar en eje Y
-        if (transform.position.y < target.position.y - 20)
+        if (transform.position.y < target.position.y && (distanceY < maxDistance * 10 || rb.velocity.y < -maxVelocityY))
         {
-            rb.AddForce(Vector3.up * impulseY * (1 + (distanceY / 100)), ForceMode.Impulse);
+            rb.AddForce(Vector3.up * impulseY, ForceMode.Impulse);
+        }
+        else if (transform.position.y > target.position.y && (distanceY > maxDistance * 10 || rb.velocity.y > maxVelocityY))
+        {
+            rb.AddForce(Vector3.down * impulseY, ForceMode.Impulse);
         }
 
         // Impulsar en eje Z local, segun la distanciaXZ
-        if (distanceXZ > maxDistance - 20)
+        if (distanceXZ > maxDistance || rb.velocity.z < -maxVelocityZ)
         {
-            rb.AddRelativeForce(Vector3.forward * impulseZ * (1 + (distanceXZ / 100)), ForceMode.Impulse);
+            rb.AddRelativeForce(Vector3.forward * impulseZ, ForceMode.Impulse);
         }
-        else
+        else if (distanceXZ < maxDistance || rb.velocity.z > maxVelocityZ)
         {
-            rb.AddRelativeForce(Vector3.back * impulseZ * (1 + (distanceXZ / 100)), ForceMode.Impulse);
+            rb.AddRelativeForce(Vector3.back * impulseZ, ForceMode.Impulse);
         }
     }
 
@@ -139,6 +136,7 @@ public class Dragon : MonoBehaviour
         if (notFinishedNpcs.Length > 0)
         {
             target = npcs[Random.Range(0, notFinishedNpcs.Length)].transform;
+            target.GetComponent<JumpingNPC>().SetBeingChased(true);
             print("TARGET -> " + target);
         }
         else
