@@ -1335,7 +1335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
       propertyPath: numDragons
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5738400593823093076, guid: 4111394d4696a1c47873905b72b35f45, type: 3}
       propertyPath: lineColor.a
