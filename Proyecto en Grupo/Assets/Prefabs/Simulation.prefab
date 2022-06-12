@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7080746182506588063
+--- !u!1 &5738400593823093077
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7080746182506588049}
-  - component: {fileID: 7080746182506588062}
+  - component: {fileID: 5738400593823093083}
+  - component: {fileID: 5738400593823093076}
   m_Layer: 0
-  m_Name: TimeScaleGame
+  m_Name: Simulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7080746182506588049
+--- !u!4 &5738400593823093083
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7080746182506588063}
+  m_GameObject: {fileID: 5738400593823093077}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -358.31226, y: 142.8735, z: -263.64423}
+  m_LocalPosition: {x: -358.31226, y: -306, z: 384.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7080746182506588062
+--- !u!114 &5738400593823093076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7080746182506588063}
+  m_GameObject: {fileID: 5738400593823093077}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2162444addc1a36419ace3090cf2bd2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeScaleGame: 5
+  timeScaleGame: 1
+  numNPCs: 5
+  numDragons: 1
+  Dragon: {fileID: 8707464760800869853, guid: 8e305fa5ba90ff749a2dd2d3be4ffb27, type: 3}
+  NPC: {fileID: 4442979218004042976, guid: c529d57f865c6534da73fc8bb52f440b, type: 3}

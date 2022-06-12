@@ -36,14 +36,16 @@ public class Platform : MonoBehaviour
             }
             else if (nextPlatform != null)
             {
-                if (jumpingNPC.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
-                {
-                    jumpingNPC.SetNextPlatform(nextPlatform);
-
+                // if (jumpingNPC.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())   //Comprobamos que la siguiente plataforma es la que acaba de pisar el NPC
+                // {
                     // Predecir y saltar
-                    other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                    jumpingNPC.isSetToJump = true;
-                }
+                    if (!jumpingNPC.IsSetToJump())
+                    {
+                        jumpingNPC.SetToJump(true);
+                        jumpingNPC.SetNextPlatform(nextPlatform);
+                        other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                    }
+                // }
             }
         }
         else if (other.gameObject.tag == "Projectile")
@@ -57,10 +59,14 @@ public class Platform : MonoBehaviour
     // A -> C
     private void OnDestroy() 
     {
-        List<Platform> platforms = FindObjectsOfType<Platform>().ToList();
-        platforms
-            .Find(p => p.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID())
-            .SetNextPlatform(nextPlatform);
+        Platform p = FindObjectsOfType<Platform>()
+            .ToList()
+            .Find(p => p.GetNextPlatform().GetInstanceID() == gameObject.GetInstanceID());
+        
+        if (p != null)
+        {
+            p.SetNextPlatform(nextPlatform);
+        }    
     }
 
     public GameObject GetNextPlatform()
@@ -71,5 +77,14 @@ public class Platform : MonoBehaviour
     public void SetNextPlatform(GameObject nextPlatform)
     {
         this.nextPlatform = nextPlatform;
+    }
+
+    public void DrawLine(Color color)
+    {
+        if (nextPlatform != null)
+        {
+            Vector3 target = transform.TransformDirection(nextPlatform.transform.position);
+            Debug.DrawLine(transform.position, target, color);
+        }
     }
 }

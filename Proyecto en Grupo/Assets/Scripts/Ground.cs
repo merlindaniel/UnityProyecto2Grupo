@@ -19,7 +19,7 @@ public class Ground : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "NPC") {
             print("-----------TOCA SUELO");
-            other.gameObject.GetComponent<JumpingNPC>().GoToCurrentPlatform();
+            other.gameObject.GetComponent<JumpingNPC>().GoToSpawn();
         }
     }
 }

@@ -19,8 +19,8 @@ public abstract class PredictionAI : MonoBehaviour
     public string initialExperienceFilename;
 
     // IA
-    protected Instances trainingDataset;
-    protected MultilayerPerceptron AIModel;
+    [HideInInspector] protected Instances trainingDataset;
+    [HideInInspector] protected MultilayerPerceptron AIModel;
 
     protected virtual void Start()
     {

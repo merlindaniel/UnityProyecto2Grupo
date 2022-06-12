@@ -6,14 +6,14 @@ using weka.core;
 public class JumpingAI : PredictionAI
 {
     //UI
-    string text;
+    [HideInInspector] string text;
 
     //Factores
     const float incHeightFactor = 2f;
 
     //Otros
-    JumpingNPC mainNPC;
-    Rigidbody rb;
+    [HideInInspector] JumpingNPC mainNPC;
+    [HideInInspector] Rigidbody rb;
 
     protected override void Start()
     {
@@ -59,7 +59,6 @@ public class JumpingAI : PredictionAI
         instance.setValue(3, distance);
         float fZ = (float) Predict(instance);
 
-        print("Fuerza en Z: " + fZ + ". Fuerza en Y: " + fY + ". Distancia: " + distance + ". Altura: " + height);
         mainNPC.jumpRelative(0, fY, fZ);
     }
 
