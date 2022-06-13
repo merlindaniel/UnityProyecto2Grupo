@@ -118,7 +118,7 @@ public class Dragon : MonoBehaviour
             }
             else if (distanceXZ < -maxDistance)
             {
-                rb.AddRelativeForce(Vector3.back * impulseZ * (distanceXZ / 100), ForceMode.Impulse);
+                rb.AddRelativeForce(Vector3.back * impulseZ * (1 - (distanceXZ / 100)), ForceMode.Impulse);
             }
         }
     }
