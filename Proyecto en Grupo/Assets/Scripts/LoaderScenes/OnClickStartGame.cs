@@ -18,7 +18,7 @@ public class OnClickStartGame : MonoBehaviour
             bool existsOutputModelFile = File.Exists("Assets/WekaData/output_model.model");
             if (existsOutputModelFile)
             {
-                Loader.Load(Loader.Scene.Main);
+                Loader.Load(Loader.Scene.Simulation);
             }
             else
             {

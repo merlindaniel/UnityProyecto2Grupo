@@ -23,8 +23,8 @@ public class TrainingAI : MonoBehaviour
     public int maxHeight = 40;
     public int slopeFZ = 20, slopeHeight = 1;
 
-    [Header("NPC Prefab")]
-    public GameObject NPCPrefab;
+    [Header("Object Prefab")]
+    public GameObject objectPrefab;
 
     [Header("UI Settings")]
     public GameObject buttonGameObject;
@@ -33,8 +33,8 @@ public class TrainingAI : MonoBehaviour
     weka.classifiers.functions.MultilayerPerceptron AIModelFZ;
     weka.core.Instances dataset;
 
-    GameObject instanceNPC;
-    float npcHeight;
+    GameObject objectInstance;
+    float objectHeight;
 
     float desiredHeight, initialPosZ, initialPosX, calculatedDistance;
 
@@ -56,16 +56,15 @@ public class TrainingAI : MonoBehaviour
         if (!regexModel.IsMatch(modelFilename))
             modelFilename = "output_model.model";
 
-        GameObject iNPC = Instantiate(NPCPrefab);
-        npcHeight = iNPC.GetComponent<Collider>().bounds.size.y;
-        Destroy(iNPC);
+        GameObject iObject = Instantiate(objectPrefab);
+        objectHeight = iObject.GetComponent<Collider>().bounds.size.y;
+        Destroy(iObject);
 
         if (buttonGameObject != null)
         {
             Button saveAndBackBtn = buttonGameObject.GetComponent<Button>();
             saveAndBackBtn.onClick.AddListener(SaveAndGoMainMenu);
         }
-
 
         StartCoroutine("Entrenamiento");
     }
@@ -84,14 +83,14 @@ public class TrainingAI : MonoBehaviour
         {
             for (float height=minHeight; height <= maxHeight; height+=slopeHeight)
             {
-                instanceNPC = Instantiate(NPCPrefab);
-                instanceNPC.transform.position = transform.position;
-                Rigidbody rb = instanceNPC.GetComponent<Rigidbody>();
+                objectInstance = Instantiate(objectPrefab);
+                objectInstance.transform.position = transform.position;
+                Rigidbody rb = objectInstance.GetComponent<Rigidbody>();
                 desiredHeight = height;
                     
                 initialPosZ = transform.position.z;
                 initialPosX = transform.position.x;
-                float fY = CalculateFY(rb.mass, height+(npcHeight/2));
+                float fY = CalculateFY(rb.mass, height+(objectHeight/2));
 
                 rb.AddForce(new Vector3(0, fY, fZ), ForceMode.Impulse);
 
@@ -109,36 +108,9 @@ public class TrainingAI : MonoBehaviour
                 instance.setValue(3, calculatedDistance);
                 dataset.add(instance);
 
-                Destroy(instanceNPC);
+                Destroy(objectInstance);
             }
         }
-
-        //print("Se crearon " + dataset.numInstances() + " casos de entrenamiento");
-
-        ////GUARDADO DATASET
-        //File output = new File("Assets/WekaData/" + outputFilename);
-        //if (!output.exists())
-        //    System.IO.File.Create(output.getAbsoluteFile().toString()).Dispose();
-        //ArffSaver saver = new ArffSaver();
-        //saver.setInstances(dataset);
-        //saver.setFile(output);
-        //saver.writeBatch();
-        //print("---------- FIN ENTRENAMIENTO ----------");
-
-
-        ////GENERACION DEL MODELO
-        //if (generateModel)
-        //{
-        //    print("----EMPIEZA GENERACION DEL MODELO");
-        //    dataset.setClassIndex(0);
-        //    AIModelFZ = new MultilayerPerceptron();
-        //    AIModelFZ.setHiddenLayers("7,4");
-        //    AIModelFZ.setTrainingTime(2000);
-
-        //    AIModelFZ.buildClassifier(dataset);                        //CREAR MODELO
-        //    SerializationHelper.write("Assets/WekaData/" + modelFilename, AIModelFZ);
-        //    print("----TERMINA GENERACION DEL MODELO");
-        //}
         GenerateDatasetAndModel();
     }
 
@@ -189,18 +161,17 @@ public class TrainingAI : MonoBehaviour
             GenerateDatasetAndModel();
             Loader.Load(Loader.Scene.MainMenu);
         }
-
     }
 
     void FixedUpdate()
     {
-        if (instanceNPC != null)
+        if (objectInstance != null)
         {
-            if (!isDistanceCalculated && (instanceNPC.transform.position.y-(npcHeight/2)) <= desiredHeight && instanceNPC.GetComponent<Rigidbody>().velocity.y < 0)
+            if (!isDistanceCalculated && (objectInstance.transform.position.y-(objectHeight/2)) <= desiredHeight && objectInstance.GetComponent<Rigidbody>().velocity.y < 0)
             {
-                instanceNPC.GetComponent<Rigidbody>().isKinematic = true;
-                float actPosX = instanceNPC.transform.position.x;
-                float actPosZ = instanceNPC.transform.position.z;
+                objectInstance.GetComponent<Rigidbody>().isKinematic = true;
+                float actPosX = objectInstance.transform.position.x;
+                float actPosZ = objectInstance.transform.position.z;
                 calculatedDistance = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(initialPosX - actPosX), 2f) + Mathf.Pow(Mathf.Abs(initialPosZ - actPosZ), 2f));
                 isDistanceCalculated = true;
             }
