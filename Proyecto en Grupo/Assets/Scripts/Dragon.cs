@@ -105,10 +105,6 @@ public class Dragon : MonoBehaviour
             {
                 rb.AddForce(Vector3.up * impulseY * (1 + (distanceY / 100) * (rb.velocity.y < 0 ? 1 + (-rb.velocity.y / 100) : 1)), ForceMode.Impulse);
             }
-            // else if (transform.position.y > target.position.y && (distanceY > maxDistance * 5 || rb.velocity.y > maxVelocityY))
-            // {
-            //     rb.AddForce(Vector3.down * impulseY / 100f, ForceMode.Impulse);
-            // }
         }
 
         timerX += Time.deltaTime;
@@ -125,10 +121,6 @@ public class Dragon : MonoBehaviour
                 rb.AddRelativeForce(Vector3.back * impulseZ * (distanceXZ / 100), ForceMode.Impulse);
             }
         }
-
-        //float distanceY = transform.position.y - target.position.y;
-
-
     }
 
     void FireballAttack()
