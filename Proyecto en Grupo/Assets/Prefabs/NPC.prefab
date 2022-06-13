@@ -129,7 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b069ea25504bc4dbb531fd9bfae7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSetToJump: 0
+  timeUntilJumpRangeMin: 0.5
+  timeUntilJumpRangeMax: 5
   manualJump: 0
   respawn: 0
 --- !u!114 &4442979218004042985
@@ -145,5 +146,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadModel: 1
-  modelFileName: Modelo_final_up_down.model
+  modelFileName: output_model.model
   initialExperienceFilename: Experiencia_Inicial.arff

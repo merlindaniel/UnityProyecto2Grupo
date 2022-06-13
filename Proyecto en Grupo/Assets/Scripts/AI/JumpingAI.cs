@@ -22,7 +22,7 @@ public class JumpingAI : PredictionAI
 
         Regex regex = new Regex(@"[a-zA-Z]+\w*\.model");
         if (!regex.IsMatch(modelFileName))
-            modelFileName = "Modelo_Multilayer_Perceptron.model";
+            modelFileName = "output_model.model";
             
         base.Start(); // Cargar modelo
     }

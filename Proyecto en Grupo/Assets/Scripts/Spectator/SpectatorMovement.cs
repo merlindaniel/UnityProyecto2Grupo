@@ -8,13 +8,15 @@ public class SpectatorMovement : MonoBehaviour
     public float defaultSpeed = 1.5f;
 
     private CharacterController controller;
+    private bool lockedCursor;
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; 
+        Cursor.lockState = CursorLockMode.Locked;
+        lockedCursor = true;
         speed = defaultSpeed;
     }
 
@@ -36,5 +38,21 @@ public class SpectatorMovement : MonoBehaviour
         {
             speed = defaultSpeed;
         }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (lockedCursor)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                lockedCursor = false;
+            } else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                lockedCursor = true;
+            }
+            
+        }
+
     }
 }

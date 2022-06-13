@@ -7,6 +7,7 @@ public static class Loader
 {
     public enum Scene
     {
+        MainMenu,
         Main,
         EntrenamientoJose
     }

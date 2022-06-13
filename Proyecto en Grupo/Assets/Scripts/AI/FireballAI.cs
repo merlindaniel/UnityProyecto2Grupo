@@ -17,6 +17,7 @@ public class FireballAI : PredictionAI
 
     protected override void Start()
     {
+        modelFileName = "fireball_ai_model.model";
         base.Start(); // Cargar modelo
     }
 

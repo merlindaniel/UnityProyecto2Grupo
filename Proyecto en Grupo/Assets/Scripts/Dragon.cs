@@ -96,7 +96,7 @@ public class Dragon : MonoBehaviour
         float distanceXZ = Mathf.Abs(Vector3.Distance(targetPositionXZ, new Vector3(transform.position.x, 0, transform.position.z)));
         float distanceY = Mathf.Abs(transform.position.y - target.position.y);
 
-        timerY+= Time.deltaTime;
+        timerY += Time.deltaTime;
         if (timerY > timeUntilY)
         {
             timerY = 0f;
@@ -111,7 +111,7 @@ public class Dragon : MonoBehaviour
             // }
         }
 
-        timerX+= Time.deltaTime;
+        timerX += Time.deltaTime;
         if (timerX > timeUntilX)
         {
             timerX = 0f;
@@ -125,6 +125,10 @@ public class Dragon : MonoBehaviour
                 rb.AddRelativeForce(Vector3.back * impulseZ * (distanceXZ / 100), ForceMode.Impulse);
             }
         }
+
+        //float distanceY = transform.position.y - target.position.y;
+
+
     }
 
     void FireballAttack()

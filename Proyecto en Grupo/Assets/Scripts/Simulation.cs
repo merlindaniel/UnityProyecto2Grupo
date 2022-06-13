@@ -1,21 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class Simulation : MonoBehaviour
 {
-    public float timeScaleGame;
 
+    [Header("Basic Simulation Settings")]
+    public float timeScaleGame;
     public int numNPCs = 2;
     public int numDragons = 1;
 
     // Prefabs
-    public GameObject Dragon, NPC;
+    [Header("Prefabs Settings")]
+    public GameObject Dragon;
+    public GameObject NPC;
 
     // Platform
+    [Header("Platform Settings")]
     public bool drawLinesBetweenPlatforms = false;
     public Color lineColor = Color.white;
+
+    [Header("UI Settings")]
+    public GameObject BackButtonGameObject;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +42,15 @@ public class Simulation : MonoBehaviour
                 transform.localPosition + Vector3.right * Random.Range(-10f, 10f) + Vector3.forward * Random.Range(-10f, 10f), 
                 Quaternion.identity
             );
+        }
+
+        if (BackButtonGameObject != null)
+        {
+            Button btn = BackButtonGameObject.GetComponent<Button>();
+            btn.onClick.AddListener(() =>
+            {
+                Loader.Load(Loader.Scene.MainMenu);
+            });
         }
     }
 

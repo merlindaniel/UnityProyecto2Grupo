@@ -14,9 +14,9 @@ using System;
 public abstract class PredictionAI : MonoBehaviour
 {
     [Header("Model Settings")]
-    public bool loadModel = false;
-    public string modelFileName;
-    public string initialExperienceFilename;
+    public bool loadModel = true;
+    public string modelFileName = "output_model.model";
+    public string initialExperienceFilename = "Experiencia_Inicial.arff";
 
     // IA
     [HideInInspector] protected Instances trainingDataset;
