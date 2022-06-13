@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class Simulation : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class Simulation : MonoBehaviour
             Button btn = BackButtonGameObject.GetComponent<Button>();
             btn.onClick.AddListener(() =>
             {
+                // SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
                 Loader.Load(Loader.Scene.MainMenu);
             });
         }

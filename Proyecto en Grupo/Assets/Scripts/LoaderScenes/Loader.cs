@@ -9,11 +9,12 @@ public static class Loader
     {
         MainMenu,
         Main,
-        EntrenamientoJose
+        TrainingAI
     }
 
     public static void Load(Scene scene)
     {
         SceneManager.LoadScene(scene.ToString());
+        // SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
     } 
 }

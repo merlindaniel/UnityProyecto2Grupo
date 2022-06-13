@@ -5,9 +5,6 @@ using weka.core;
 
 public class JumpingAI : PredictionAI
 {
-    //UI
-    [HideInInspector] string text;
-
     //Factores
     const float incHeightFactor = 2f;
 
@@ -25,12 +22,6 @@ public class JumpingAI : PredictionAI
             modelFileName = "output_model.model";
             
         base.Start(); // Cargar modelo
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        text = "Alt actual: " + transform.position.y; 
     }
 
     // Obtiene la Fuerza a aplicar en el eje Y aplicando la formula de lanzamiento vertical y la segunda ley de Newton
@@ -60,10 +51,5 @@ public class JumpingAI : PredictionAI
         float fZ = (float) Predict(instance);
 
         mainNPC.jumpRelative(0, fY, fZ);
-    }
-
-    void OnGUI()
-    {
-        GUI.Label(new Rect(10, 20, 600, 20), text);
     }
 }

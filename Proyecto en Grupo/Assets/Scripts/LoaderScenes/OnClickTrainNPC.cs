@@ -13,7 +13,7 @@ public class OnClickTrainNPC : MonoBehaviour
         Button trainNPCButton = GetComponent<Button>();
         trainNPCButton.onClick.AddListener(() =>
         {
-            Loader.Load(Loader.Scene.EntrenamientoJose);
+            Loader.Load(Loader.Scene.TrainingAI);
         });
     }
 
