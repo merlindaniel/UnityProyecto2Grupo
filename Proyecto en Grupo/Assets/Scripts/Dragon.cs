@@ -47,10 +47,11 @@ public class Dragon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Resetear objetivo cuando un NPC se cae al vacio
         if (target != null && !target.GetComponent<JumpingNPC>().isBeingChased())
             target = null;
 
-        // Si no hay target o este ya ha terminado el circuito, seleccionar otro target
+        // Si no hay objetivo o este ya ha terminado el circuito, seleccionar otro objetivo
         if (target == null || target.GetComponent<JumpingNPC>().IsFinished())
             SelectTarget();
 
@@ -60,7 +61,7 @@ public class Dragon : MonoBehaviour
         else if (rb.isKinematic && (allowRotation || allowMovement))
             rb.isKinematic = false;
 
-        if (target != null)
+        if (target != null) // Si hay objetivo -> perseguirlo y atacarlo
         {
             // Rotar dragon
             if (allowRotation)        
@@ -78,8 +79,11 @@ public class Dragon : MonoBehaviour
                 FireballAttack();
             }
         }
-        else // Si no hay target, no se mueve ni rota
+        else 
         {
+            // Si no hay objetivo, la simulación ha terminado
+            // por lo que el dragon se queda quieto
+
             allowMovement = false;
             allowRotation = false;
         }

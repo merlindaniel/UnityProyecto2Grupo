@@ -31,7 +31,7 @@ public abstract class PredictionAI : MonoBehaviour
     protected virtual void LoadAndBuildModel()
     {
         trainingDataset = new weka.core.Instances(new java.io.FileReader("Assets/WekaData/" + initialExperienceFilename));
-        trainingDataset.setClassIndex(0);   //Queremos obtener Fuerza en Z
+        trainingDataset.setClassIndex(0);   //Queremos predecir el primer parámetro
 
         //CONSTRUCCION DE CASOS DE ENTRENAMIENTO
         if (!loadModel)
@@ -44,7 +44,7 @@ public abstract class PredictionAI : MonoBehaviour
             AIModel.buildClassifier(trainingDataset);                        //CREAR MODELO
             SerializationHelper.write("Assets/WekaData/" + modelFileName, AIModel);
         }
-        else
+        else // Cargamos el modelo
         {
             AIModel = (MultilayerPerceptron)SerializationHelper.read("Assets/WekaData/" + modelFileName);
         }
@@ -57,8 +57,6 @@ public abstract class PredictionAI : MonoBehaviour
 
     public virtual void PredictAndExecute()
     {
-        // Predict
-
-        // Execute
+        // Predict then execute
     }
 }
