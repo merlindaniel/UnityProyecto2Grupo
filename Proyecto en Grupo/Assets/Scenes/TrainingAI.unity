@@ -160,7 +160,7 @@ MonoBehaviour:
   maxHeight: 40
   slopeFZ: 20
   slopeHeight: 1
-  NPCPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
+  objectPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
   buttonGameObject: {fileID: 1236009632}
 --- !u!4 &431373492
 Transform:
@@ -619,7 +619,7 @@ MonoBehaviour:
   maxHeight: 40
   slopeFZ: 20
   slopeHeight: 1
-  NPCPrefab: {fileID: 2208150422692394596, guid: 6c2cad50621cee143b11e4740d75deb7, type: 3}
+  objectPrefab: {fileID: 0}
   buttonGameObject: {fileID: 0}
 --- !u!4 &1452812001
 Transform:
